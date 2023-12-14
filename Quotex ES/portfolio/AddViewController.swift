@@ -101,6 +101,8 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         return label
     }()
     
+    private let cryptocurrencies = ["Bitcoin", "Ethereum", "Ripple", "Litecoin", "Dash", "Monero", "NEM", "NEO", "IOTA", "Cardano", "Polkadot", "Solana", "Dogecoin", "Chainlink", "Binance Coin", "Tether", "Stellar"]
+    
     private lazy var currencyTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Select currency"
@@ -129,17 +131,13 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         let dropdownImageView = UIImageView(image: dropdownImage)
         dropdownImageView.contentMode = .scaleAspectFit
         dropdownImageView.tintColor = .gray
-        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: dropdownImageView.frame.width + 20, height: dropdownImageView.frame.height))
-        dropdownImageView.center = CGPoint(x: rightPaddingView.frame.width / 2, y: rightPaddingView.frame.height / 2)
-        rightPaddingView.addSubview(dropdownImageView)
+        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
         textField.rightView = rightPaddingView
         textField.rightViewMode = .always
 
         return textField
     }()
-    
-    private let cryptocurrencies = ["Bitcoin", "Ethereum", "Ripple", "Litecoin", "Dash", "Monero", "NEM", "NEO", "IOTA", "Cardano", "Polkadot", "Solana", "Dogecoin", "Chainlink", "Binance Coin", "Tether", "Stellar"]
-    
+
     private lazy var coinPriceTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Loading price..."
@@ -148,11 +146,12 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.layer.cornerRadius = 10
         textField.textColor = UIColor(named: "usd")
         textField.font = UIFont.systemFont(ofSize: 16)
-        textField.textAlignment = .left
+        textField.textAlignment = .right
         textField.isEnabled = false
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
-        textField.leftView = paddingView
-        textField.leftViewMode = .always
+        
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
+        textField.rightView = paddingView
+        textField.rightViewMode = .always 
         return textField
     }()
 
@@ -164,15 +163,17 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.layer.cornerRadius = 10
         textField.textColor = UIColor(named: "usd")
         textField.font = UIFont.systemFont(ofSize: 16)
-        textField.textAlignment = .left
+        textField.textAlignment = .right
         textField.keyboardType = .decimalPad
         textField.inputViewController?.dismissKeyboard()
         textField.keyboardType = .numberPad
+        
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
-        textField.leftView = paddingView
+        textField.rightView = paddingView
+        textField.rightViewMode = .always 
         return textField
     }()
-    
+
     private lazy var quantityTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = ""
@@ -181,15 +182,18 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.layer.cornerRadius = 10
         textField.textColor = UIColor(named: "usd")
         textField.font = UIFont.systemFont(ofSize: 16)
-        textField.textAlignment = .left
+        textField.textAlignment = .right
         textField.keyboardType = .decimalPad
         textField.inputViewController?.dismissKeyboard()
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
-        textField.leftView = paddingView
+        
+        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
+        textField.rightView = paddingView
+        textField.rightViewMode = .always
         textField.keyboardType = .numberPad
         textField.leftViewMode = .always
         return textField
     }()
+
     
     private lazy var dateTextField: UITextField = {
         let textField = UITextField()
@@ -198,14 +202,23 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.layer.cornerRadius = 10
         textField.textColor = UIColor(named: "usd")
         textField.font = UIFont.systemFont(ofSize: 16)
-        textField.textAlignment = .left
+        textField.textAlignment = .center
         textField.keyboardType = .decimalPad
         textField.inputViewController?.dismissKeyboard()
-        let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
-        textField.leftView = paddingView
+        let imageView = UIImageView(image: UIImage(named: "date"))
+        imageView.contentMode = .right
+        let imageWidth: CGFloat = 10
+        let imageHeight: CGFloat = 12
+        imageView.frame = CGRect(x: 0, y: 0, width: imageWidth, height: imageHeight)
+        let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
+        textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: imageWidth + 10, height: imageHeight))
+        textField.rightView?.addSubview(imageView)
+        textField.rightView?.addSubview(rightPaddingView)
+        textField.rightViewMode = .always
         return textField
     }()
-    
+
+
     private lazy var datePicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.preferredDatePickerStyle = .wheels
@@ -216,7 +229,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     
     private let dateFormatter: DateFormatter = {
         let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy" // Adjust this format as needed
+        formatter.dateFormat = "dd.MM.yyyy"
         return formatter
     }()
     
@@ -400,14 +413,20 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
 
         onSave?(cryptocurrency)
         navigationController?.popViewController(animated: true)
+        showAlertWithDismiss(message: "Cryptocurrency has been successfully added to your portfolio.")
+    }
+    
+    private func showAlertWithDismiss(message: String) {
+        let alert = UIAlertController(title: "Success", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default) { [weak self] _ in
+            self?.navigationController?.popViewController(animated: true)
+        })
+        present(alert, animated: true)
     }
 
     private func determineImageName(for currencyName: String) -> String {
         return "default_crypto_image"
     }
-
-    // Rest of your code...
-
 
     private func showAlert(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
@@ -459,7 +478,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     func fetchPrice(for currency: String) {
         let currencyId = mapCurrencyToId(currency: currency)
         let urlString = "https://api.coingecko.com/api/v3/simple/price?ids=\(currencyId)&vs_currencies=usd"
-
         guard let url = URL(string: urlString) else {
             print("Invalid URL for currency: \(currency)")
             return

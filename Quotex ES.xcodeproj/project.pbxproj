@@ -42,6 +42,7 @@
 		512E0B492B296C5B00EA3D9E /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B482B296C5B00EA3D9E /* AddViewController.swift */; };
 		512E0B4B2B2ABF1000EA3D9E /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */; };
 		512E0B4D2B2B05B500EA3D9E /* CoinsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4C2B2B05B500EA3D9E /* CoinsAPI.swift */; };
+		512E0B502B2B474600EA3D9E /* ThemeMenager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4F2B2B474600EA3D9E /* ThemeMenager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -76,6 +77,7 @@
 		512E0B482B296C5B00EA3D9E /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		512E0B4C2B2B05B500EA3D9E /* CoinsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsAPI.swift; sourceTree = "<group>"; };
+		512E0B4F2B2B474600EA3D9E /* ThemeMenager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeMenager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -121,8 +123,8 @@
 				512E0B122B275B8400EA3D9E /* statistics */,
 				512E0B292B28A96900EA3D9E /* settings */,
 				511E14E52B25B2C10018F508 /* info */,
+				512E0B512B2B6EBC00EA3D9E /* SFPro */,
 				511E14ED2B25B4110018F508 /* helpers */,
-				512E0B4E2B2B291B00EA3D9E /* SFPpo */,
 				511E14B62B25B0850018F508 /* Main.storyboard */,
 				511E14BB2B25B08A0018F508 /* LaunchScreen.storyboard */,
 				511E14BE2B25B08A0018F508 /* Info.plist */,
@@ -200,11 +202,12 @@
 			isa = PBXGroup;
 			children = (
 				511E14CA2B25B11D0018F508 /* SettingsViewController.swift */,
+				512E0B4F2B2B474600EA3D9E /* ThemeMenager.swift */,
 			);
 			path = settings;
 			sourceTree = "<group>";
 		};
-		512E0B4E2B2B291B00EA3D9E /* SFPpo */ = {
+		512E0B512B2B6EBC00EA3D9E /* SFPro */ = {
 			isa = PBXGroup;
 			children = (
 				512E0B3A2B28BD4300EA3D9E /* SFProDisplay-Black.ttf */,
@@ -217,7 +220,7 @@
 				512E0B382B28BD4200EA3D9E /* SFProDisplay-Thin.ttf */,
 				512E0B362B28BD4200EA3D9E /* SFProDisplay-Ultralight.ttf */,
 			);
-			path = SFPpo;
+			path = SFPro;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -323,6 +326,7 @@
 				511E14D12B25B11D0018F508 /* StartScreenViewController.swift in Sources */,
 				512E0B4B2B2ABF1000EA3D9E /* Crypto.swift in Sources */,
 				511E14D02B25B11D0018F508 /* SettingsViewController.swift in Sources */,
+				512E0B502B2B474600EA3D9E /* ThemeMenager.swift in Sources */,
 				511E14DF2B25B24A0018F508 /* PortfolioViewController.swift in Sources */,
 				512E0B0C2B25DE0500EA3D9E /* CryptoTableViewCell.swift in Sources */,
 				511E14CE2B25B11D0018F508 /* QuizViewController.swift in Sources */,

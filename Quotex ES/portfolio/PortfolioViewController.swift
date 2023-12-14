@@ -182,16 +182,24 @@
             return tableView
         }()
         
+        var isDarkModeEnabled: Bool = false {
+            didSet {
+                updateTheme()
+            }
+        }
+        
         // MARK: - View Lifecycle
         
         override func viewDidLoad() {
             super.viewDidLoad()
             view.backgroundColor = UIColor.white
+            NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .didChangeTheme, object: nil)
             
             setupViews()
             setupConstraints()
             setupAddButton()
             loadCryptocurrencies()
+            updateTheme()
         }
         
         override func viewWillAppear(_ animated: Bool) {
@@ -467,4 +475,41 @@
         func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
             return 100
         }
-    }
+        
+        
+        @objc private func updateTheme() {
+            if isDarkModeEnabled {
+                view.backgroundColor = UIColor.black
+                headerView.backgroundColor = UIColor.darkGray
+            } else {
+                view.backgroundColor = UIColor.white
+                if let tabbarColor = UIColor(named: "tabbar") {
+                    headerView.backgroundColor = tabbarColor
+                }
+            }
+            
+            let textColor = isDarkModeEnabled ? UIColor.white : UIColor.black
+            usdWalletLabel.textColor = textColor
+            addCurrencyLabel.textColor = textColor
+            totalBalanceLabel.textColor = textColor
+            mainBalancePortfolio.textColor = textColor
+            hourMainBalancePortfolioPercent.textColor = textColor
+            dayMainBalancePortfolioPercent.textColor = textColor
+            weekMainBalancePortfolioPercent.textColor = textColor
+            staticTimeLabel.textColor = textColor
+            allTimeMainLabel.textColor = textColor
+            allUpTimeLabel.textColor = textColor
+            allDownTimeLabel.textColor = textColor
+        }
+        
+        override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+            super.traitCollectionDidChange(previousTraitCollection)
+            
+            // Определить текущую тему при изменении traitCollection
+            if self.traitCollection.userInterfaceStyle == .dark {
+                isDarkModeEnabled = true
+            } else {
+                isDarkModeEnabled = false
+            }
+        }
+}

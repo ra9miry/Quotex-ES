@@ -26,10 +26,10 @@ class SettingsViewController: UIViewController {
         return label
     }()
     
-    
     private lazy var settingsMainImageView: UIImageView = {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "set")
+        imageView.image = UIImage(named: "setb")
         imageView.contentMode = .scaleAspectFit
         return imageView
     }()
@@ -68,6 +68,12 @@ class SettingsViewController: UIViewController {
         return button
     }()
     
+    private var isDarkThemeEnabled: Bool = false {
+        didSet {
+            updateTheme()
+        }
+    }
+    
     private lazy var privacyPolicyLabel: UILabel = {
         let label = UILabel()
         label.text = "Privacy policy"
@@ -88,10 +94,14 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .didChangeTheme, object: nil)
+        updateTheme()
         setupViews()
         setupConstraints()
         setupTapGestureForLabel()
-        setLightTheme()
+        isDarkThemeEnabled = false
+        lightThemeRadioButton.isSelected = true
+        darkThemeRadioButton.isSelected = false
     }
     
     private func setupViews() {
@@ -170,8 +180,8 @@ class SettingsViewController: UIViewController {
         let imageOff = UIImage(named: "offrad")
         let imageOn = UIImage(named: "onrad")
         
-        button.setImage(imageOff, for: .normal)
-        button.setImage(imageOn, for: .selected)
+        button.setImage(imageOn, for: .normal)
+        button.setImage(imageOff, for: .selected)
         
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(radioButtonTapped), for: .touchUpInside)
@@ -184,8 +194,8 @@ class SettingsViewController: UIViewController {
         let imageOff = UIImage(named: "offrad")
         let imageOn = UIImage(named: "onrad")
         
-        button.setImage(imageOff, for: .normal)
-        button.setImage(imageOn, for: .selected)
+        button.setImage(imageOn, for: .normal)
+        button.setImage(imageOff, for: .selected)
         
         button.imageView?.contentMode = .scaleAspectFit
         button.addTarget(self, action: #selector(radioButtonTapped), for: .touchUpInside)
@@ -205,27 +215,46 @@ class SettingsViewController: UIViewController {
     
 
     @objc private func radioButtonTapped(sender: UIButton) {
-        if sender == lightThemeRadioButton {
-            lightThemeRadioButton.isSelected = true
-            darkThemeRadioButton.isSelected = false
-            setLightTheme()
-        } else if sender == darkThemeRadioButton {
-            darkThemeRadioButton.isSelected = true
-            lightThemeRadioButton.isSelected = false
-            setDarkTheme()
+        if sender == darkThemeRadioButton {
+            ThemeManager.isDarkTheme = true
+        } else if sender == lightThemeRadioButton {
+            ThemeManager.isDarkTheme = false
         }
+        updateTheme()
     }
-    
-    private func setLightTheme() {
-        // Настройте здесь элементы интерфейса для светлой темы
-        self.view.backgroundColor = .white
-        // ... другие элементы интерфейса
+
+    @objc private func updateTheme() {
+        let isDarkTheme = ThemeManager.isDarkTheme
+        let themeImageName = isDarkTheme ? "setb" : "set"
+        settingsMainImageView.image = UIImage(named: themeImageName)
+        
+        let textColor = isDarkTheme ? UIColor.white : UIColor.black
+        headerNameLabel.textColor = textColor
+        darkLabel.textColor = textColor
+        whiteLabel.textColor = textColor
+        privacyPolicyLabel.textColor = textColor
+        termsLabel.textColor = textColor
+        
+        view.backgroundColor = isDarkTheme ? .black : .white
+        headerView.backgroundColor = isDarkTheme ? .darkGray : UIColor(named: "tabbar")
+
+        lightThemeRadioButton.isSelected = !isDarkTheme
+        darkThemeRadioButton.isSelected = isDarkTheme
     }
 
     private func setDarkTheme() {
-        // Настройте здесь элементы интерфейса для темной темы
         self.view.backgroundColor = .black
-        // ... другие элементы интерфейса
+        settingsMainImageView.image = UIImage(named: "setb")
+        updateLabelColors(forDarkTheme: true)
+    }
+    
+    private func updateLabelColors(forDarkTheme isDarkTheme: Bool) {
+        let textColor = isDarkTheme ? UIColor.white : UIColor(named: "price") ?? .black
+        headerNameLabel.textColor = textColor
+        darkLabel.textColor = textColor
+        whiteLabel.textColor = textColor
+        privacyPolicyLabel.textColor = textColor
+        termsLabel.textColor = textColor
     }
     
     @objc private func didTapPrivacyPolicyLabel() {
@@ -238,5 +267,9 @@ class SettingsViewController: UIViewController {
         if let url = URL(string: "https://www.google.com/chrome/") {
             UIApplication.shared.open(url)
         }
+    }
+    
+    deinit {
+        NotificationCenter.default.removeObserver(self, name: .didChangeTheme, object: nil)
     }
 }
