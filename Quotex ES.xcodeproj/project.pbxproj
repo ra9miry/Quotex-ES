@@ -9,21 +9,71 @@
 /* Begin PBXBuildFile section */
 		511E14B12B25B0850018F508 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14B02B25B0850018F508 /* AppDelegate.swift */; };
 		511E14B32B25B0850018F508 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14B22B25B0850018F508 /* SceneDelegate.swift */; };
-		511E14B52B25B0850018F508 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14B42B25B0850018F508 /* ViewController.swift */; };
 		511E14B82B25B0850018F508 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 511E14B62B25B0850018F508 /* Main.storyboard */; };
-		511E14BA2B25B0890018F508 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 511E14B92B25B0890018F508 /* Assets.xcassets */; };
 		511E14BD2B25B08A0018F508 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 511E14BB2B25B08A0018F508 /* LaunchScreen.storyboard */; };
+		511E14CE2B25B11D0018F508 /* QuizViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14C82B25B11D0018F508 /* QuizViewController.swift */; };
+		511E14D02B25B11D0018F508 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14CA2B25B11D0018F508 /* SettingsViewController.swift */; };
+		511E14D12B25B11D0018F508 /* StartScreenViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14CB2B25B11D0018F508 /* StartScreenViewController.swift */; };
+		511E14D22B25B11D0018F508 /* StatisticsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14CC2B25B11D0018F508 /* StatisticsViewController.swift */; };
+		511E14DF2B25B24A0018F508 /* PortfolioViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14DE2B25B24A0018F508 /* PortfolioViewController.swift */; };
+		511E14E32B25B29A0018F508 /* TabBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14E22B25B2990018F508 /* TabBarViewController.swift */; };
+		511E14E92B25B3CA0018F508 /* InfoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14E62B25B3CA0018F508 /* InfoTableViewCell.swift */; };
+		511E14EA2B25B3CA0018F508 /* InfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14E72B25B3CA0018F508 /* InfoViewController.swift */; };
+		511E14EB2B25B3CA0018F508 /* Info.swift in Sources */ = {isa = PBXBuildFile; fileRef = 511E14E82B25B3CA0018F508 /* Info.swift */; };
+		511E14F12B25B4610018F508 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 511E14F02B25B4610018F508 /* SnapKit */; };
+		511E14F32B25B4610018F508 /* SnapKit-Dynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 511E14F22B25B4610018F508 /* SnapKit-Dynamic */; };
+		512E0B0C2B25DE0500EA3D9E /* CryptoTableViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B0B2B25DE0500EA3D9E /* CryptoTableViewCell.swift */; };
+		512E0B112B25E94E00EA3D9E /* Assets 3.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B102B25E94E00EA3D9E /* Assets 3.xcassets */; };
+		512E0B192B28370000EA3D9E /* AboutViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B182B28370000EA3D9E /* AboutViewController.swift */; };
+		512E0B1F2B284FDA00EA3D9E /* InfoMassive.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B1E2B284FDA00EA3D9E /* InfoMassive.swift */; };
+		512E0B222B2868E600EA3D9E /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 512E0B212B2868E600EA3D9E /* DGCharts */; };
+		512E0B242B2868E600EA3D9E /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 512E0B232B2868E600EA3D9E /* DGChartsDynamic */; };
+		512E0B262B286A7A00EA3D9E /* DGCharts in Frameworks */ = {isa = PBXBuildFile; productRef = 512E0B252B286A7A00EA3D9E /* DGCharts */; };
+		512E0B282B286A7A00EA3D9E /* DGChartsDynamic in Frameworks */ = {isa = PBXBuildFile; productRef = 512E0B272B286A7A00EA3D9E /* DGChartsDynamic */; };
+		512E0B3D2B28BD4300EA3D9E /* SFProDisplay-Bold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B342B28BD4200EA3D9E /* SFProDisplay-Bold.ttf */; };
+		512E0B3E2B28BD4300EA3D9E /* SFProDisplay-Medium.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B352B28BD4200EA3D9E /* SFProDisplay-Medium.ttf */; };
+		512E0B3F2B28BD4300EA3D9E /* SFProDisplay-Ultralight.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B362B28BD4200EA3D9E /* SFProDisplay-Ultralight.ttf */; };
+		512E0B402B28BD4300EA3D9E /* SFProDisplay-Semibold.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B372B28BD4200EA3D9E /* SFProDisplay-Semibold.ttf */; };
+		512E0B412B28BD4300EA3D9E /* SFProDisplay-Thin.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B382B28BD4200EA3D9E /* SFProDisplay-Thin.ttf */; };
+		512E0B422B28BD4300EA3D9E /* SFProDisplay-Heavy.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B392B28BD4200EA3D9E /* SFProDisplay-Heavy.ttf */; };
+		512E0B432B28BD4300EA3D9E /* SFProDisplay-Black.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B3A2B28BD4300EA3D9E /* SFProDisplay-Black.ttf */; };
+		512E0B442B28BD4300EA3D9E /* SFProDisplay-Light.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B3B2B28BD4300EA3D9E /* SFProDisplay-Light.ttf */; };
+		512E0B452B28BD4300EA3D9E /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B3C2B28BD4300EA3D9E /* SFProDisplay-Regular.ttf */; };
+		512E0B492B296C5B00EA3D9E /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B482B296C5B00EA3D9E /* AddViewController.swift */; };
+		512E0B4B2B2ABF1000EA3D9E /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
 		511E14AD2B25B0850018F508 /* Quotex ES.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Quotex ES.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		511E14B02B25B0850018F508 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		511E14B22B25B0850018F508 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
-		511E14B42B25B0850018F508 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		511E14B72B25B0850018F508 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		511E14B92B25B0890018F508 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		511E14BC2B25B08A0018F508 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		511E14BE2B25B08A0018F508 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		511E14C82B25B11D0018F508 /* QuizViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = QuizViewController.swift; sourceTree = "<group>"; };
+		511E14CA2B25B11D0018F508 /* SettingsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		511E14CB2B25B11D0018F508 /* StartScreenViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StartScreenViewController.swift; sourceTree = "<group>"; };
+		511E14CC2B25B11D0018F508 /* StatisticsViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StatisticsViewController.swift; sourceTree = "<group>"; };
+		511E14DE2B25B24A0018F508 /* PortfolioViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioViewController.swift; sourceTree = "<group>"; };
+		511E14E22B25B2990018F508 /* TabBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = TabBarViewController.swift; sourceTree = "<group>"; };
+		511E14E62B25B3CA0018F508 /* InfoTableViewCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoTableViewCell.swift; sourceTree = "<group>"; };
+		511E14E72B25B3CA0018F508 /* InfoViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = InfoViewController.swift; sourceTree = "<group>"; };
+		511E14E82B25B3CA0018F508 /* Info.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Info.swift; sourceTree = "<group>"; };
+		512E0B0B2B25DE0500EA3D9E /* CryptoTableViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CryptoTableViewCell.swift; sourceTree = "<group>"; };
+		512E0B102B25E94E00EA3D9E /* Assets 3.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Assets 3.xcassets"; sourceTree = "<group>"; };
+		512E0B182B28370000EA3D9E /* AboutViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AboutViewController.swift; sourceTree = "<group>"; };
+		512E0B1E2B284FDA00EA3D9E /* InfoMassive.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = InfoMassive.swift; sourceTree = "<group>"; };
+		512E0B342B28BD4200EA3D9E /* SFProDisplay-Bold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Bold.ttf"; sourceTree = "<group>"; };
+		512E0B352B28BD4200EA3D9E /* SFProDisplay-Medium.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Medium.ttf"; sourceTree = "<group>"; };
+		512E0B362B28BD4200EA3D9E /* SFProDisplay-Ultralight.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Ultralight.ttf"; sourceTree = "<group>"; };
+		512E0B372B28BD4200EA3D9E /* SFProDisplay-Semibold.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Semibold.ttf"; sourceTree = "<group>"; };
+		512E0B382B28BD4200EA3D9E /* SFProDisplay-Thin.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Thin.ttf"; sourceTree = "<group>"; };
+		512E0B392B28BD4200EA3D9E /* SFProDisplay-Heavy.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Heavy.ttf"; sourceTree = "<group>"; };
+		512E0B3A2B28BD4300EA3D9E /* SFProDisplay-Black.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Black.ttf"; sourceTree = "<group>"; };
+		512E0B3B2B28BD4300EA3D9E /* SFProDisplay-Light.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Light.ttf"; sourceTree = "<group>"; };
+		512E0B3C2B28BD4300EA3D9E /* SFProDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Regular.ttf"; sourceTree = "<group>"; };
+		512E0B482B296C5B00EA3D9E /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
+		512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -31,6 +81,12 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				512E0B242B2868E600EA3D9E /* DGChartsDynamic in Frameworks */,
+				511E14F12B25B4610018F508 /* SnapKit in Frameworks */,
+				512E0B262B286A7A00EA3D9E /* DGCharts in Frameworks */,
+				512E0B222B2868E600EA3D9E /* DGCharts in Frameworks */,
+				512E0B282B286A7A00EA3D9E /* DGChartsDynamic in Frameworks */,
+				511E14F32B25B4610018F508 /* SnapKit-Dynamic in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -56,15 +112,101 @@
 		511E14AF2B25B0850018F508 /* Quotex ES */ = {
 			isa = PBXGroup;
 			children = (
-				511E14B02B25B0850018F508 /* AppDelegate.swift */,
-				511E14B22B25B0850018F508 /* SceneDelegate.swift */,
-				511E14B42B25B0850018F508 /* ViewController.swift */,
+				511E14EC2B25B3ED0018F508 /* Delegate */,
+				511E14E02B25B26B0018F508 /* start */,
+				511E14E42B25B2A60018F508 /* tabBar */,
+				512E0B0E2B25DEF000EA3D9E /* portfolio */,
+				512E0B122B275B8400EA3D9E /* statistics */,
+				512E0B292B28A96900EA3D9E /* settings */,
+				511E14E52B25B2C10018F508 /* info */,
+				511E14ED2B25B4110018F508 /* helpers */,
 				511E14B62B25B0850018F508 /* Main.storyboard */,
-				511E14B92B25B0890018F508 /* Assets.xcassets */,
 				511E14BB2B25B08A0018F508 /* LaunchScreen.storyboard */,
 				511E14BE2B25B08A0018F508 /* Info.plist */,
+				512E0B3A2B28BD4300EA3D9E /* SFProDisplay-Black.ttf */,
+				512E0B342B28BD4200EA3D9E /* SFProDisplay-Bold.ttf */,
+				512E0B392B28BD4200EA3D9E /* SFProDisplay-Heavy.ttf */,
+				512E0B3B2B28BD4300EA3D9E /* SFProDisplay-Light.ttf */,
+				512E0B352B28BD4200EA3D9E /* SFProDisplay-Medium.ttf */,
+				512E0B3C2B28BD4300EA3D9E /* SFProDisplay-Regular.ttf */,
+				512E0B372B28BD4200EA3D9E /* SFProDisplay-Semibold.ttf */,
+				512E0B382B28BD4200EA3D9E /* SFProDisplay-Thin.ttf */,
+				512E0B362B28BD4200EA3D9E /* SFProDisplay-Ultralight.ttf */,
 			);
 			path = "Quotex ES";
+			sourceTree = "<group>";
+		};
+		511E14E02B25B26B0018F508 /* start */ = {
+			isa = PBXGroup;
+			children = (
+				511E14C82B25B11D0018F508 /* QuizViewController.swift */,
+				511E14CB2B25B11D0018F508 /* StartScreenViewController.swift */,
+			);
+			path = start;
+			sourceTree = "<group>";
+		};
+		511E14E42B25B2A60018F508 /* tabBar */ = {
+			isa = PBXGroup;
+			children = (
+				511E14E22B25B2990018F508 /* TabBarViewController.swift */,
+			);
+			path = tabBar;
+			sourceTree = "<group>";
+		};
+		511E14E52B25B2C10018F508 /* info */ = {
+			isa = PBXGroup;
+			children = (
+				511E14E82B25B3CA0018F508 /* Info.swift */,
+				511E14E72B25B3CA0018F508 /* InfoViewController.swift */,
+				511E14E62B25B3CA0018F508 /* InfoTableViewCell.swift */,
+				512E0B182B28370000EA3D9E /* AboutViewController.swift */,
+				512E0B1E2B284FDA00EA3D9E /* InfoMassive.swift */,
+			);
+			path = info;
+			sourceTree = "<group>";
+		};
+		511E14EC2B25B3ED0018F508 /* Delegate */ = {
+			isa = PBXGroup;
+			children = (
+				511E14B02B25B0850018F508 /* AppDelegate.swift */,
+				511E14B22B25B0850018F508 /* SceneDelegate.swift */,
+			);
+			path = Delegate;
+			sourceTree = "<group>";
+		};
+		511E14ED2B25B4110018F508 /* helpers */ = {
+			isa = PBXGroup;
+			children = (
+				512E0B102B25E94E00EA3D9E /* Assets 3.xcassets */,
+			);
+			path = helpers;
+			sourceTree = "<group>";
+		};
+		512E0B0E2B25DEF000EA3D9E /* portfolio */ = {
+			isa = PBXGroup;
+			children = (
+				511E14DE2B25B24A0018F508 /* PortfolioViewController.swift */,
+				512E0B0B2B25DE0500EA3D9E /* CryptoTableViewCell.swift */,
+				512E0B482B296C5B00EA3D9E /* AddViewController.swift */,
+				512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */,
+			);
+			path = portfolio;
+			sourceTree = "<group>";
+		};
+		512E0B122B275B8400EA3D9E /* statistics */ = {
+			isa = PBXGroup;
+			children = (
+				511E14CC2B25B11D0018F508 /* StatisticsViewController.swift */,
+			);
+			path = statistics;
+			sourceTree = "<group>";
+		};
+		512E0B292B28A96900EA3D9E /* settings */ = {
+			isa = PBXGroup;
+			children = (
+				511E14CA2B25B11D0018F508 /* SettingsViewController.swift */,
+			);
+			path = settings;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -83,6 +225,14 @@
 			dependencies = (
 			);
 			name = "Quotex ES";
+			packageProductDependencies = (
+				511E14F02B25B4610018F508 /* SnapKit */,
+				511E14F22B25B4610018F508 /* SnapKit-Dynamic */,
+				512E0B212B2868E600EA3D9E /* DGCharts */,
+				512E0B232B2868E600EA3D9E /* DGChartsDynamic */,
+				512E0B252B286A7A00EA3D9E /* DGCharts */,
+				512E0B272B286A7A00EA3D9E /* DGChartsDynamic */,
+			);
 			productName = "Quotex ES";
 			productReference = 511E14AD2B25B0850018F508 /* Quotex ES.app */;
 			productType = "com.apple.product-type.application";
@@ -111,6 +261,10 @@
 				Base,
 			);
 			mainGroup = 511E14A42B25B0850018F508;
+			packageReferences = (
+				511E14EF2B25B4610018F508 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				512E0B202B2868E600EA3D9E /* XCRemoteSwiftPackageReference "Charts" */,
+			);
 			productRefGroup = 511E14AE2B25B0850018F508 /* Products */;
 			projectDirPath = "";
 			projectRoot = "";
@@ -125,9 +279,18 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				512E0B422B28BD4300EA3D9E /* SFProDisplay-Heavy.ttf in Resources */,
 				511E14BD2B25B08A0018F508 /* LaunchScreen.storyboard in Resources */,
-				511E14BA2B25B0890018F508 /* Assets.xcassets in Resources */,
+				512E0B432B28BD4300EA3D9E /* SFProDisplay-Black.ttf in Resources */,
+				512E0B452B28BD4300EA3D9E /* SFProDisplay-Regular.ttf in Resources */,
+				512E0B442B28BD4300EA3D9E /* SFProDisplay-Light.ttf in Resources */,
+				512E0B402B28BD4300EA3D9E /* SFProDisplay-Semibold.ttf in Resources */,
+				512E0B412B28BD4300EA3D9E /* SFProDisplay-Thin.ttf in Resources */,
 				511E14B82B25B0850018F508 /* Main.storyboard in Resources */,
+				512E0B3D2B28BD4300EA3D9E /* SFProDisplay-Bold.ttf in Resources */,
+				512E0B112B25E94E00EA3D9E /* Assets 3.xcassets in Resources */,
+				512E0B3F2B28BD4300EA3D9E /* SFProDisplay-Ultralight.ttf in Resources */,
+				512E0B3E2B28BD4300EA3D9E /* SFProDisplay-Medium.ttf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -138,9 +301,22 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				511E14B52B25B0850018F508 /* ViewController.swift in Sources */,
+				512E0B1F2B284FDA00EA3D9E /* InfoMassive.swift in Sources */,
+				511E14E32B25B29A0018F508 /* TabBarViewController.swift in Sources */,
 				511E14B12B25B0850018F508 /* AppDelegate.swift in Sources */,
 				511E14B32B25B0850018F508 /* SceneDelegate.swift in Sources */,
+				511E14E92B25B3CA0018F508 /* InfoTableViewCell.swift in Sources */,
+				512E0B492B296C5B00EA3D9E /* AddViewController.swift in Sources */,
+				511E14EA2B25B3CA0018F508 /* InfoViewController.swift in Sources */,
+				511E14D12B25B11D0018F508 /* StartScreenViewController.swift in Sources */,
+				512E0B4B2B2ABF1000EA3D9E /* Crypto.swift in Sources */,
+				511E14D02B25B11D0018F508 /* SettingsViewController.swift in Sources */,
+				511E14DF2B25B24A0018F508 /* PortfolioViewController.swift in Sources */,
+				512E0B0C2B25DE0500EA3D9E /* CryptoTableViewCell.swift in Sources */,
+				511E14CE2B25B11D0018F508 /* QuizViewController.swift in Sources */,
+				511E14D22B25B11D0018F508 /* StatisticsViewController.swift in Sources */,
+				512E0B192B28370000EA3D9E /* AboutViewController.swift in Sources */,
+				511E14EB2B25B3CA0018F508 /* Info.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -363,6 +539,58 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		511E14EF2B25B4610018F508 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.6.0;
+			};
+		};
+		512E0B202B2868E600EA3D9E /* XCRemoteSwiftPackageReference "Charts" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/danielgindi/Charts";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		511E14F02B25B4610018F508 /* SnapKit */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 511E14EF2B25B4610018F508 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = SnapKit;
+		};
+		511E14F22B25B4610018F508 /* SnapKit-Dynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 511E14EF2B25B4610018F508 /* XCRemoteSwiftPackageReference "SnapKit" */;
+			productName = "SnapKit-Dynamic";
+		};
+		512E0B212B2868E600EA3D9E /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 512E0B202B2868E600EA3D9E /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+		512E0B232B2868E600EA3D9E /* DGChartsDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 512E0B202B2868E600EA3D9E /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGChartsDynamic;
+		};
+		512E0B252B286A7A00EA3D9E /* DGCharts */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 512E0B202B2868E600EA3D9E /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGCharts;
+		};
+		512E0B272B286A7A00EA3D9E /* DGChartsDynamic */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 512E0B202B2868E600EA3D9E /* XCRemoteSwiftPackageReference "Charts" */;
+			productName = DGChartsDynamic;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 511E14A52B25B0850018F508 /* Project object */;
 }
