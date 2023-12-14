@@ -4,7 +4,15 @@
 <dict>
 	<key>UIAppFonts</key>
 	<array>
-		<string></string>
+		<string>SFProDisplay-Black.ttf</string>
+		<string>SFProDisplay-Bold.ttf</string>
+		<string>SFProDisplay-Heavy.ttf</string>
+		<string>SFProDisplay-Light.ttf</string>
+		<string>SFProDisplay-Medium.ttf</string>
+		<string>SFProDisplay-Regular.ttf</string>
+		<string>SFProDisplay-Semibold.ttf</string>
+		<string>SFProDisplay-Thin.ttf</string>
+		<string>SFProDisplay-Ultralight.ttf</string>
 	</array>
 	<key>UIApplicationSceneManifest</key>
 	<dict>

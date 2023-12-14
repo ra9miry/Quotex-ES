@@ -41,6 +41,7 @@
 		512E0B452B28BD4300EA3D9E /* SFProDisplay-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 512E0B3C2B28BD4300EA3D9E /* SFProDisplay-Regular.ttf */; };
 		512E0B492B296C5B00EA3D9E /* AddViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B482B296C5B00EA3D9E /* AddViewController.swift */; };
 		512E0B4B2B2ABF1000EA3D9E /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */; };
+		512E0B4D2B2B05B500EA3D9E /* CoinsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4C2B2B05B500EA3D9E /* CoinsAPI.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -74,6 +75,7 @@
 		512E0B3C2B28BD4300EA3D9E /* SFProDisplay-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "SFProDisplay-Regular.ttf"; sourceTree = "<group>"; };
 		512E0B482B296C5B00EA3D9E /* AddViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AddViewController.swift; sourceTree = "<group>"; };
 		512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
+		512E0B4C2B2B05B500EA3D9E /* CoinsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsAPI.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -120,18 +122,10 @@
 				512E0B292B28A96900EA3D9E /* settings */,
 				511E14E52B25B2C10018F508 /* info */,
 				511E14ED2B25B4110018F508 /* helpers */,
+				512E0B4E2B2B291B00EA3D9E /* SFPpo */,
 				511E14B62B25B0850018F508 /* Main.storyboard */,
 				511E14BB2B25B08A0018F508 /* LaunchScreen.storyboard */,
 				511E14BE2B25B08A0018F508 /* Info.plist */,
-				512E0B3A2B28BD4300EA3D9E /* SFProDisplay-Black.ttf */,
-				512E0B342B28BD4200EA3D9E /* SFProDisplay-Bold.ttf */,
-				512E0B392B28BD4200EA3D9E /* SFProDisplay-Heavy.ttf */,
-				512E0B3B2B28BD4300EA3D9E /* SFProDisplay-Light.ttf */,
-				512E0B352B28BD4200EA3D9E /* SFProDisplay-Medium.ttf */,
-				512E0B3C2B28BD4300EA3D9E /* SFProDisplay-Regular.ttf */,
-				512E0B372B28BD4200EA3D9E /* SFProDisplay-Semibold.ttf */,
-				512E0B382B28BD4200EA3D9E /* SFProDisplay-Thin.ttf */,
-				512E0B362B28BD4200EA3D9E /* SFProDisplay-Ultralight.ttf */,
 			);
 			path = "Quotex ES";
 			sourceTree = "<group>";
@@ -189,6 +183,7 @@
 				512E0B0B2B25DE0500EA3D9E /* CryptoTableViewCell.swift */,
 				512E0B482B296C5B00EA3D9E /* AddViewController.swift */,
 				512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */,
+				512E0B4C2B2B05B500EA3D9E /* CoinsAPI.swift */,
 			);
 			path = portfolio;
 			sourceTree = "<group>";
@@ -207,6 +202,22 @@
 				511E14CA2B25B11D0018F508 /* SettingsViewController.swift */,
 			);
 			path = settings;
+			sourceTree = "<group>";
+		};
+		512E0B4E2B2B291B00EA3D9E /* SFPpo */ = {
+			isa = PBXGroup;
+			children = (
+				512E0B3A2B28BD4300EA3D9E /* SFProDisplay-Black.ttf */,
+				512E0B342B28BD4200EA3D9E /* SFProDisplay-Bold.ttf */,
+				512E0B392B28BD4200EA3D9E /* SFProDisplay-Heavy.ttf */,
+				512E0B3B2B28BD4300EA3D9E /* SFProDisplay-Light.ttf */,
+				512E0B352B28BD4200EA3D9E /* SFProDisplay-Medium.ttf */,
+				512E0B3C2B28BD4300EA3D9E /* SFProDisplay-Regular.ttf */,
+				512E0B372B28BD4200EA3D9E /* SFProDisplay-Semibold.ttf */,
+				512E0B382B28BD4200EA3D9E /* SFProDisplay-Thin.ttf */,
+				512E0B362B28BD4200EA3D9E /* SFProDisplay-Ultralight.ttf */,
+			);
+			path = SFPpo;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -305,6 +316,7 @@
 				511E14E32B25B29A0018F508 /* TabBarViewController.swift in Sources */,
 				511E14B12B25B0850018F508 /* AppDelegate.swift in Sources */,
 				511E14B32B25B0850018F508 /* SceneDelegate.swift in Sources */,
+				512E0B4D2B2B05B500EA3D9E /* CoinsAPI.swift in Sources */,
 				511E14E92B25B3CA0018F508 /* InfoTableViewCell.swift in Sources */,
 				512E0B492B296C5B00EA3D9E /* AddViewController.swift in Sources */,
 				511E14EA2B25B3CA0018F508 /* InfoViewController.swift in Sources */,

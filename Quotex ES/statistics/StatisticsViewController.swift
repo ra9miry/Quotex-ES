@@ -55,6 +55,8 @@ class StatisticsViewController: UIViewController {
         return label
     }()
     
+    var totalPortfolioBalance: Double = 0
+    
     private lazy var hourMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
         label.text = "+20,50%"
@@ -162,13 +164,13 @@ class StatisticsViewController: UIViewController {
         return label
     }()
     
-        private lazy var pieChartView: PieChartView = {
-            let chartView = PieChartView()
-            chartView.legend.enabled = false
-            chartView.holeColor = .clear
-            chartView.entryLabelColor = .black
-            return chartView
-        }()
+    private lazy var pieChartView: PieChartView = {
+        let chartView = PieChartView()
+        chartView.legend.enabled = false
+        chartView.holeColor = .clear
+        chartView.entryLabelColor = .black
+        return chartView
+    }()
     
     private lazy var colorView: UIView = {
         let colorView = UIView()
@@ -195,14 +197,15 @@ class StatisticsViewController: UIViewController {
         return label
     }()
     
-    private var cryptoData: [String: Double] = [
-        "Bitcoin": Double.random(in: 1.0...10.0),
-        "Ethereum": Double.random(in: 1.0...10.0),
-        "Ripple": Double.random(in: 1.0...10.0),
-        "Litecoin": Double.random(in: 1.0...10.0),
-        "Cardano": Double.random(in: 1.0...10.0)
-    ]
-    
+    private lazy var detailsStackView: UIStackView = {
+        let stackView = UIStackView()
+        stackView.axis = .vertical
+        stackView.alignment = .fill
+        stackView.distribution = .fillEqually
+        stackView.spacing = 10
+        return stackView
+    }()
+
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -211,6 +214,8 @@ class StatisticsViewController: UIViewController {
         setupViews()
         setupConstraints()
         setupPieChart()
+        updateTotalBalance()
+        updatePieChart()
     }
     
     private func setupViews() {
@@ -239,6 +244,7 @@ class StatisticsViewController: UIViewController {
         view.addSubview(colorView)
         view.addSubview(nameChartLabel)
         view.addSubview(percentChartLabel)
+        view.addSubview(detailsStackView)
     }
 
     private func setupConstraints() {
@@ -347,18 +353,7 @@ class StatisticsViewController: UIViewController {
             make.size.equalTo(190)
         }
         
-        colorView.snp.makeConstraints() { make in
-            make.centerY.equalTo(currencyView.snp.centerY)
-            make.trailing.equalTo(nameChartLabel.snp.leading).offset(-8)
-            make.size.equalTo(8)
-        }
-        
-        nameChartLabel.snp.makeConstraints() { make in
-            make.centerY.equalTo(currencyView.snp.centerY)
-            make.trailing.equalTo(percentChartLabel.snp.leading).offset(-8)
-        }
-        
-        percentChartLabel.snp.makeConstraints { make in
+        detailsStackView.snp.makeConstraints { make in
             make.centerY.equalTo(currencyView.snp.centerY)
             make.trailing.equalTo(currencyView.snp.trailing).offset(-30)
         }
@@ -381,27 +376,96 @@ class StatisticsViewController: UIViewController {
         }
     }
     
+    private func updateTotalBalance() {
+        totalPortfolioBalance = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
+            return result + (crypto.purchasePrice * crypto.quantity)
+        }
+        mainBalancePortfolio.text = String(format: "$%.2f", totalPortfolioBalance)
+        detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+    }
+    
     private func setupPieChart() {
         var entries: [ChartDataEntry] = []
-
-        let cryptoCurrencies = ["Bitcoin", "Ethereum", "Ripple", "Litecoin", "Cardano"]
-        
-        for _ in 0..<cryptoCurrencies.count {
-            entries.append(PieChartDataEntry(value: Double.random(in: 1.0...10.0), label: ""))
-        }
 
         let dataSet = PieChartDataSet(entries: entries, label: "")
         dataSet.colors = ChartColorTemplates.joyful()
         
         let data = PieChartData(dataSet: dataSet)
         pieChartView.data = data
+    }
+    
+    private func updatePieChart() {
+        var entries: [PieChartDataEntry] = []
         
-        let totalCryptoCount = cryptoCurrencies.count
-        pieChartView.centerText = "\(totalCryptoCount)"
+        for crypto in PortfolioViewController.cryptocurrencies {
+            let totalValue = crypto.purchasePrice * crypto.quantity
+            let entry = PieChartDataEntry(value: totalValue, label: crypto.name)
+            entries.append(entry)
+        }
+
+        let dataSet = PieChartDataSet(entries: entries, label: "Portfolio Distribution")
+        dataSet.colors = ChartColorTemplates.joyful()
+        
+        let data = PieChartData(dataSet: dataSet)
+        pieChartView.data = data
+        pieChartView.notifyDataSetChanged()
+        
+        detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
+        
+        for (index, crypto) in PortfolioViewController.cryptocurrencies.enumerated() {
+            let color = dataSet.colors[index % dataSet.colors.count]
+            let colorView = createColorView(color: color)
+            let nameLabel = createNameLabel(with: crypto.name)
+            let percentLabel = createPercentLabel(with: crypto)
+
+            let container = UIStackView(arrangedSubviews: [colorView, nameLabel, percentLabel])
+            container.axis = .horizontal
+            container.spacing = 5
+            detailsStackView.addArrangedSubview(container)
+        }
+    }
+    
+    private func createColorView(color: UIColor) -> UIView {
+        let view = UIView()
+        view.backgroundColor = color
+        view.layer.cornerRadius = 6
+        view.clipsToBounds = true
+        view.snp.makeConstraints { make in
+            make.width.height.equalTo(12)
+        }
+        return view
+    }
+    
+    private func createNameLabel(with name: String) -> UILabel {
+        let label = UILabel()
+        label.text = name
+        label.textColor = UIColor(named: "usd")
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }
+
+    private func createPercentLabel(with crypto: Cryptocurrency) -> UILabel {
+        let label = UILabel()
+        let percentValue = (crypto.purchasePrice * crypto.quantity / totalPortfolioBalance) * 100
+        label.text = String(format: "%.2f%%", percentValue)
+        label.textColor = UIColor(named: "price")
+        label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }
+    
+    private func updateChartDetailViews(selectedIndex: Int) {
+        guard selectedIndex < PortfolioViewController.cryptocurrencies.count else { return }
+
+        let selectedCrypto = PortfolioViewController.cryptocurrencies[selectedIndex]
+        nameChartLabel.text = selectedCrypto.name
+        percentChartLabel.text = String(format: "%.2f%%", selectedCrypto.purchasePrice * selectedCrypto.quantity / totalPortfolioBalance * 100)
+
+        // Обновить colorView в соответствии с цветом выбранного сектора
+        if let colors = pieChartView.data?.dataSets[0].colors {
+            colorView.backgroundColor = colors[selectedIndex % colors.count]
+        }
     }
     
     @objc private func updateTheme() {
-        // Обновите интерфейс вашего контроллера в соответствии с новой темой
-        // Например, измените цвета, изображения и т.д.
     }
 }

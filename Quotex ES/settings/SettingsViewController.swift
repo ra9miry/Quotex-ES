@@ -90,6 +90,8 @@ class SettingsViewController: UIViewController {
         
         setupViews()
         setupConstraints()
+        setupTapGestureForLabel()
+        setLightTheme()
     }
     
     private func setupViews() {
@@ -191,13 +193,50 @@ class SettingsViewController: UIViewController {
         return button
     }
     
+    private func setupTapGestureForLabel() {
+        let privacyPolicyTap = UITapGestureRecognizer(target: self, action: #selector(didTapPrivacyPolicyLabel))
+        privacyPolicyLabel.isUserInteractionEnabled = true
+        privacyPolicyLabel.addGestureRecognizer(privacyPolicyTap)
+
+        let termsTap = UITapGestureRecognizer(target: self, action: #selector(didTapTermsLabel))
+        termsLabel.isUserInteractionEnabled = true
+        termsLabel.addGestureRecognizer(termsTap)
+    }
+    
+
     @objc private func radioButtonTapped(sender: UIButton) {
         if sender == lightThemeRadioButton {
-            lightThemeRadioButton.isSelected = false
-            darkThemeRadioButton.isSelected = true
-        } else if sender == darkThemeRadioButton {
-            darkThemeRadioButton.isSelected = false
             lightThemeRadioButton.isSelected = true
+            darkThemeRadioButton.isSelected = false
+            setLightTheme()
+        } else if sender == darkThemeRadioButton {
+            darkThemeRadioButton.isSelected = true
+            lightThemeRadioButton.isSelected = false
+            setDarkTheme()
+        }
+    }
+    
+    private func setLightTheme() {
+        // Настройте здесь элементы интерфейса для светлой темы
+        self.view.backgroundColor = .white
+        // ... другие элементы интерфейса
+    }
+
+    private func setDarkTheme() {
+        // Настройте здесь элементы интерфейса для темной темы
+        self.view.backgroundColor = .black
+        // ... другие элементы интерфейса
+    }
+    
+    @objc private func didTapPrivacyPolicyLabel() {
+        if let url = URL(string: "https://browser.yandex.ru/") {
+            UIApplication.shared.open(url)
+        }
+    }
+
+    @objc private func didTapTermsLabel() {
+        if let url = URL(string: "https://www.google.com/chrome/") {
+            UIApplication.shared.open(url)
         }
     }
 }

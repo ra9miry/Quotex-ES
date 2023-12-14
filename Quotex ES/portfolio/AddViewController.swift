@@ -138,11 +138,11 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         return textField
     }()
     
-    private let cryptocurrencies = ["Bitcoin", "Ethereum", "Ripple", "Litecoin", "Dash", "Monero", "NEM", "NEO", "IOTA", "Bitcoin Cash", "Cardano", "Polkadot", "Solana", "Dogecoin", "Chainlink", "Binance Coin", "Tether", "USD Coin", "XRP", "Stellar"]
+    private let cryptocurrencies = ["Bitcoin", "Ethereum", "Ripple", "Litecoin", "Dash", "Monero", "NEM", "NEO", "IOTA", "Cardano", "Polkadot", "Solana", "Dogecoin", "Chainlink", "Binance Coin", "Tether", "Stellar"]
     
     private lazy var coinPriceTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Loading price"
+        textField.placeholder = "Loading price..."
         textField.layer.borderColor = UIColor(named: "border")?.cgColor
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = 10
@@ -167,6 +167,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.textAlignment = .left
         textField.keyboardType = .decimalPad
         textField.inputViewController?.dismissKeyboard()
+        textField.keyboardType = .numberPad
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
         textField.leftView = paddingView
         return textField
@@ -185,6 +186,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.inputViewController?.dismissKeyboard()
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: textField.frame.height))
         textField.leftView = paddingView
+        textField.keyboardType = .numberPad
         textField.leftViewMode = .always
         return textField
     }()
@@ -212,6 +214,12 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         return picker
     }()
     
+    private let dateFormatter: DateFormatter = {
+        let formatter = DateFormatter()
+        formatter.dateFormat = "dd.MM.yyyy" // Adjust this format as needed
+        return formatter
+    }()
+    
     private lazy var saveButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("SAVE", for: .normal)
@@ -226,7 +234,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.hidesBackButton = true
-        
+        saveButton.isEnabled = false
         setupViews()
         setupConstraints()
         dateTextField.inputView = datePicker
@@ -358,32 +366,55 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     }
     
     @objc private func saveButtonTapped() {
-        // Ensure all fields are correctly filled
-        guard let currencyName = currencyTextField.text,
-              let coinPriceString = coinPriceTextField.text, let coinPrice = Double(coinPriceString),
-              let purchasePriceString = purchaseTextField.text, let purchasePrice = Double(purchasePriceString),
-              let quantityString = quantityTextField.text, let quantity = Double(quantityString),
-              let purchaseDateString = dateTextField.text else {
-            // Show error to user if data is not correct
+        guard let currencyName = currencyTextField.text, !currencyName.isEmpty else {
+            showAlert(message: "Currency name is required.")
             return
         }
-        
-        // Create and configure the DateFormatter
-        let dateFormatter = DateFormatter()
-        dateFormatter.dateFormat = "dd.MM.yyyy" // Set the same format you expect from dateTextField
-        
-        // Convert the string to a Date object
-        if let purchaseDate = dateFormatter.date(from: purchaseDateString) {
-            // Create the Cryptocurrency instance and save it
-            let cryptocurrency = Cryptocurrency(name: currencyName, coinPrice: coinPrice, purchasePrice: purchasePrice, quantity: quantity, purchaseDate: purchaseDate)
-            onSave?(cryptocurrency)
-            navigationController?.popViewController(animated: true)
-        } else {
-            // Handle the situation where the date string does not match the expected format
-            // Show error to the user
+
+        guard let coinPriceString = coinPriceTextField.text?.replacingOccurrences(of: "$", with: ""),
+              let coinPrice = Double(coinPriceString) else {
+            showAlert(message: "Invalid coin price.")
+            return
         }
+
+        guard let purchasePriceString = purchaseTextField.text,
+              let purchasePrice = Double(purchasePriceString) else {
+            showAlert(message: "Purchase price is not valid.")
+            return
+        }
+
+        guard let quantityString = quantityTextField.text,
+              let quantity = Double(quantityString) else {
+            showAlert(message: "Quantity is not valid.")
+            return
+        }
+
+        guard let purchaseDateString = dateTextField.text, !purchaseDateString.isEmpty,
+              let purchaseDate = dateFormatter.date(from: purchaseDateString) else {
+            showAlert(message: "Date is required or format is incorrect.")
+            return
+        }
+
+        let imageName = determineImageName(for: currencyName)
+        let cryptocurrency = Cryptocurrency(name: currencyName, coinPrice: coinPrice, purchasePrice: purchasePrice, quantity: quantity, purchaseDate: purchaseDate, imageName: imageName)
+
+        onSave?(cryptocurrency)
+        navigationController?.popViewController(animated: true)
     }
-    
+
+    private func determineImageName(for currencyName: String) -> String {
+        return "default_crypto_image"
+    }
+
+    // Rest of your code...
+
+
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
     struct CryptoPriceResponse: Decodable {
         let bitcoin: PriceData?
         let ethereum: PriceData?
@@ -445,6 +476,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
                 if let priceData = priceResponse[currencyId], let price = priceData.usd {
                     DispatchQueue.main.async {
                         self?.coinPriceTextField.text = String(format: "$%.2f", price)
+                        self?.saveButton.isEnabled = true
                     }
                 }
             } catch {
