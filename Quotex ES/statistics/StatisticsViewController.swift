@@ -24,7 +24,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = "Statistics"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Bold", size: 20)
         return label
     }()
     
@@ -43,7 +43,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = "Total balance"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         return label
     }()
     
@@ -51,7 +51,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = "$23.456,44"
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
         return label
     }()
     
@@ -61,7 +61,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         return label
     }()
     
@@ -69,7 +69,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         return label
     }()
     
@@ -77,7 +77,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         return label
     }()
     
@@ -85,7 +85,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 10)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 10)
         return label
     }()
     
@@ -93,7 +93,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = randomNegativePercentage()
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 10)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 10)
         return label
     }()
     
@@ -120,7 +120,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = "1H\n1D\n7D"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         label.numberOfLines = 3
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 9
@@ -160,7 +160,7 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         label.text = "All Currency"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         return label
     }()
     
@@ -184,7 +184,7 @@ class StatisticsViewController: UIViewController {
         let label =  UILabel()
         label.text = "BTC"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         return label
     }()
     
@@ -193,7 +193,7 @@ class StatisticsViewController: UIViewController {
         label.text = "12%"
         label.textColor = UIColor(named: "price")
         label.textAlignment = .left
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         return label
     }()
     
@@ -210,12 +210,14 @@ class StatisticsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .didChangeTheme, object: nil)
         
         setupViews()
         setupConstraints()
         setupPieChart()
         updateTotalBalance()
         updatePieChart()
+        updateTheme()
     }
     
     private func setupViews() {
@@ -485,5 +487,37 @@ class StatisticsViewController: UIViewController {
     }
     
     @objc private func updateTheme() {
+        let isDarkTheme = ThemeManager.isDarkTheme
+        
+        let textColor = isDarkTheme ? UIColor.white : UIColor.black
+        let backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
+
+        view.backgroundColor = backgroundColor
+        headerView.backgroundColor = UIColor(named: "tabbar")
+        labelForInfoName.textColor = .white
+        totalBalanceView.backgroundColor = backgroundColor
+        totalBalanceLabel.textColor = textColor
+        mainBalancePortfolio.textColor = textColor
+        hourMainBalancePortfolioPercent.textColor = textColor
+        dayMainBalancePortfolioPercent.textColor = textColor
+        weekMainBalancePortfolioPercent.textColor = textColor
+        allUpTimeLabel.textColor = textColor
+        allDownTimeLabel.textColor = textColor
+        staticTimeLabel.textColor = textColor
+        allTimeMainLabel.textColor = textColor
+        аllCurrencyLabel.textColor = textColor
+        nameChartLabel.textColor = textColor
+        percentChartLabel.textColor = textColor
+        currencyView.backgroundColor = backgroundColor
+        pieChartView.backgroundColor = backgroundColor
+        for view in detailsStackView.arrangedSubviews {
+            if let stackView = view as? UIStackView {
+                stackView.arrangedSubviews.forEach { subview in
+                    if let label = subview as? UILabel {
+                        label.textColor = textColor
+                    }
+                }
+            }
+        }
     }
 }

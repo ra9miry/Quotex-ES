@@ -35,7 +35,7 @@ class AboutViewController: UIViewController {
         let label = UILabel()
         label.text = "Useful Information"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Bold", size: 20)
         return label
     }()
 
@@ -53,7 +53,7 @@ class AboutViewController: UIViewController {
         label.numberOfLines = 0
         label.textAlignment = .center
         label.textColor = UIColor(named: "white")
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 16)
         return label
     }()
 
@@ -68,7 +68,7 @@ class AboutViewController: UIViewController {
         label.numberOfLines = 0
         label.textAlignment = .left
         label.textColor = UIColor(named: "white")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         return label
     }()
 
@@ -82,13 +82,17 @@ class AboutViewController: UIViewController {
     }
 
     override func viewDidLoad() {
-        super.viewDidLoad()
-        view.backgroundColor = .black
-
-        setupViews()
-        setupConstraints()
-        navigationItem.hidesBackButton = true
-        updateUI()
+         super.viewDidLoad()
+         navigationItem.hidesBackButton = true
+         setupViews()
+         setupConstraints()
+         updateTheme()
+         updateUI()
+     }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateTheme()
     }
 
     private func setupViews() {
@@ -158,5 +162,23 @@ class AboutViewController: UIViewController {
         mainNameLabel.text = infoMassive.description
         infoAboutMainImage.image = UIImage(named: infoMassive.imageName)
         textLabel.text = infoMassive.additionalInfo
+    }
+    
+    private func updateTheme() {
+        let isDarkTheme = ThemeManager.isDarkTheme
+        
+        view.backgroundColor = isDarkTheme ? .black : .white
+        labelForInfoName.textColor = isDarkTheme ? .white : .black
+        mainNameLabel.textColor = isDarkTheme ? .white : .black
+        textLabel.textColor = isDarkTheme ? .white : .black
+        headerView.backgroundColor = UIColor(named: isDarkTheme ? "black" : "white")
+        backButton.setImage(UIImage(named: isDarkTheme ? "back" : "bb"), for: .normal)
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateTheme()
+        }
     }
 }

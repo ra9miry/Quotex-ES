@@ -24,7 +24,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         let label = UILabel()
         label.text = "Portfolio"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Bold", size: 20)
         return label
     }()
 
@@ -43,7 +43,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         label.textAlignment = .center
         label.text = "Add to Portfolio"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
         return label
     }()
     
@@ -61,7 +61,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         label.textAlignment = .left
         label.text = "Currency"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
@@ -70,7 +70,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         label.textAlignment = .left
         label.text = "Coin Price"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
@@ -79,7 +79,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         label.textAlignment = .left
         label.text = "Purchase Price"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
@@ -88,7 +88,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         label.textAlignment = .left
         label.text = "Quantity"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
@@ -97,7 +97,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         label.textAlignment = .left
         label.text = "Date"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
@@ -247,11 +247,13 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         super.viewDidLoad()
         view.backgroundColor = .white
         navigationItem.hidesBackButton = true
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .didChangeTheme, object: nil)
         saveButton.isEnabled = false
         setupViews()
         setupConstraints()
         dateTextField.inputView = datePicker
         datePicker.maximumDate = Date()
+        updateTheme()
     }
     
     private func setupViews() {
@@ -512,4 +514,31 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         default: return currency.lowercased()
         }
     }
+    
+    @objc private func updateTheme() {
+        let isDarkTheme = ThemeManager.isDarkTheme
+
+        let textColor = isDarkTheme ? UIColor.white : UIColor.black
+        let backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
+        let backButtonImageName = isDarkTheme ? "back" : "bb"
+        let backButtonImage = UIImage(named: backButtonImageName)
+        backButton.setImage(backButtonImage, for: .normal)
+
+        view.backgroundColor = backgroundColor
+        headerView.backgroundColor = UIColor(named: "tabbar")
+        labelForInfoName.textColor = .white
+        addView.backgroundColor = backgroundColor
+        mainNameLabel.textColor = textColor
+        addCurrencyLabel.textColor = textColor
+        coinPriceLabel.textColor = textColor
+        purchasePriceLabel.textColor = textColor
+        quantityLabel.textColor = textColor
+        dateLabel.textColor = textColor
+        currencyTextField.textColor = textColor
+        coinPriceTextField.textColor = textColor
+        purchaseTextField.textColor = textColor
+        quantityTextField.textColor = textColor
+        dateTextField.textColor = textColor
+    }
+
 }

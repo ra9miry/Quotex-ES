@@ -21,7 +21,7 @@ class StartScreenViewController: UIViewController {
         let label = UILabel()
         label.text = "Loading..."
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
         label.textAlignment = .center
         return label
     }()
@@ -40,7 +40,7 @@ class StartScreenViewController: UIViewController {
         button.setTitleColor(UIColor.white, for: .normal)
         button.backgroundColor = UIColor(named: "qbutton")
         button.layer.cornerRadius = 10
-        button.titleLabel?.font = UIFont.systemFont(ofSize: 16)
+        button.titleLabel?.font = UIFont(name: "SFProDisplay-Regular", size: 16)
         button.addTarget(self, action: #selector(continueButtonTapped), for: .touchUpInside)
         button.isHidden = true
         return button

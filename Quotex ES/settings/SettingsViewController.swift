@@ -22,7 +22,7 @@ class SettingsViewController: UIViewController {
         let label = UILabel()
         label.text = "Settings"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Bold", size: 20)
         return label
     }()
     
@@ -38,7 +38,7 @@ class SettingsViewController: UIViewController {
         let label = UILabel()
         label.text = "Color Theme"
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
@@ -46,7 +46,7 @@ class SettingsViewController: UIViewController {
         let label = UILabel()
         label.text = "Dark"
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
@@ -54,7 +54,7 @@ class SettingsViewController: UIViewController {
         let label = UILabel()
         label.text = "White"
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
@@ -78,7 +78,7 @@ class SettingsViewController: UIViewController {
         let label = UILabel()
         label.text = "Privacy policy"
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
         return label
     }()
     
@@ -86,7 +86,7 @@ class SettingsViewController: UIViewController {
         let label = UILabel()
         label.text = "Terms and conditions"
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 20)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
         return label
     }()
     

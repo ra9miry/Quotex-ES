@@ -26,7 +26,7 @@
             let label = UILabel()
             label.text = "Portfolio"
             label.textColor = .white
-            label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
             return label
         }()
         
@@ -34,7 +34,8 @@
             let label = UILabel()
             label.text = "USD"
             label.textColor = UIColor(named: "usd")
-            label.font = UIFont.systemFont(ofSize: 20)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
+
             return label
         }()
         
@@ -42,7 +43,7 @@
             let label = UILabel()
             label.text = "Add Currency"
             label.textColor = UIColor(named: "usd")
-            label.font = UIFont.systemFont(ofSize: 12)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
             return label
         }()
         
@@ -51,6 +52,7 @@
             let image = UIImage(named: "plus")
             button.setImage(image, for: .normal)
             button.imageView?.contentMode = .scaleAspectFit
+            button.titleLabel?.font = UIFont(name: "SFProDisplay-Regular", size: 16)
             button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
             button.addTarget(self, action: #selector(plusAddCurrencyButtonTapped), for: .touchUpInside)
             return button
@@ -71,7 +73,7 @@
             let label = UILabel()
             label.text = "Total balance"
             label.textColor = UIColor(named: "usd")
-            label.font = UIFont.systemFont(ofSize: 12)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
             return label
         }()
         
@@ -79,7 +81,7 @@
             let label = UILabel()
             label.text = "$23.456,44"
             label.textColor = UIColor(named: "price")
-            label.font = UIFont.systemFont(ofSize: 20)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
             return label
         }()
         
@@ -87,7 +89,7 @@
             let label = UILabel()
             label.text = randomPositivePercentage()
             label.textColor = UIColor(named: "price")
-            label.font = UIFont.systemFont(ofSize: 12)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
             return label
         }()
         
@@ -95,7 +97,7 @@
             let label = UILabel()
             label.text = randomPositivePercentage()
             label.textColor = UIColor(named: "price")
-            label.font = UIFont.systemFont(ofSize: 12)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
             return label
         }()
         
@@ -103,7 +105,7 @@
             let label = UILabel()
             label.text = randomPositivePercentage()
             label.textColor = UIColor(named: "price")
-            label.font = UIFont.systemFont(ofSize: 12)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
             return label
         }()
         
@@ -111,7 +113,7 @@
             let label = UILabel()
             label.text = randomPositivePercentage()
             label.textColor = UIColor(named: "price")
-            label.font = UIFont.systemFont(ofSize: 10)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 10)
             return label
         }()
         
@@ -119,7 +121,7 @@
             let label = UILabel()
             label.text = randomNegativePercentage()
             label.textColor = UIColor(named: "price")
-            label.font = UIFont.systemFont(ofSize: 10)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 10)
             return label
         }()
         
@@ -146,7 +148,7 @@
             let label = UILabel()
             label.text = "1H\n1D\n7D"
             label.textColor = UIColor(named: "usd")
-            label.font = UIFont.systemFont(ofSize: 12)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
             label.numberOfLines = 3
             let paragraphStyle = NSMutableParagraphStyle()
             paragraphStyle.lineSpacing = 9
@@ -167,7 +169,7 @@
             let label = UILabel()
             label.text = "All Time"
             label.textColor = UIColor(named: "usd")
-            label.font = UIFont.systemFont(ofSize: 12)
+            label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
             return label
         }()
         
@@ -451,6 +453,7 @@
             if let borderColor = UIColor(named: "border")?.cgColor {
                 cell.contentView.layer.borderColor = borderColor
             }
+            cell.updateTheme()
             return cell
         }
         
@@ -482,33 +485,38 @@
         }
         
         @objc private func updateTheme() {
-                let isDarkTheme = ThemeManager.isDarkTheme
+            let isDarkTheme = ThemeManager.isDarkTheme
+            let textColorDarkTheme = UIColor.white
+            let textColorLightTheme = UIColor.black
+            let cellBackgroundColor = isDarkTheme ? UIColor.black : UIColor.white
 
-            view.backgroundColor = isDarkTheme ?  UIColor(named: "white") : UIColor(named: "black")
-                headerView.backgroundColor = isDarkTheme ? UIColor(named: "tabbar") : UIColor(named: "tabbar")
-            usdWalletLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
-                addCurrencyLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
-                totalBalanceLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
-            totalBalanceView.backgroundColor = isDarkTheme ? UIColor(named: "white") : UIColor(named: "back")
-            mainBalancePortfolio.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
-            hourMainBalancePortfolioPercent.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
-                dayMainBalancePortfolioPercent.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
-                weekMainBalancePortfolioPercent.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
-                staticTimeLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
-                allTimeMainLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
-                allUpTimeLabel.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
-                allDownTimeLabel.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
-            cryptoTableView.backgroundColor = isDarkTheme ? UIColor(named: "black") : UIColor(named: "white")
-                cryptoTableView.reloadData()
-            }
-        
+            view.backgroundColor = isDarkTheme ? UIColor(named: "black") : UIColor(named: "white")
+            headerView.backgroundColor = UIColor(named: "tabbar")
+            usdWalletLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+            addCurrencyLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+            totalBalanceLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+
+            totalBalanceView.backgroundColor = isDarkTheme ? UIColor(named: "backDark") : UIColor(named: "backLight")
+            mainBalancePortfolio.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+            hourMainBalancePortfolioPercent.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+            dayMainBalancePortfolioPercent.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+            weekMainBalancePortfolioPercent.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+            
+            staticTimeLabel.textColor = UIColor(named: "usd")
+            allTimeMainLabel.textColor = UIColor(named: "usd")
+
+            allUpTimeLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+            allDownTimeLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
+
+            cryptoTableView.backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
+            cryptoTableView.reloadData()
+        }
+
         override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
             super.traitCollectionDidChange(previousTraitCollection)
-            
-            if self.traitCollection.userInterfaceStyle == .dark {
-                isDarkModeEnabled = true
-            } else {
-                isDarkModeEnabled = false
+            if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+                ThemeManager.isDarkTheme = (self.traitCollection.userInterfaceStyle == .dark)
+                updateTheme()
             }
         }
 }

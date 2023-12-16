@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>top-level-items</key>
+	<array>
+		<dict>
+			<key>destination</key>
+			<dict>
+				<key>location-parameters</key>
+				<dict>
+					<key>Timestamp</key>
+					<string>724415475.08742</string>
+					<key>XcodeLocation</key>
+					<string>{"Selection":{"Editor":"Xcode3BuildSettingsEditor","Project":"Quotex ES","Xcode3BuildSettingsEditorLocations":[{"Collapsed Build Property Categories":["\u0001Architectures||SDKROOT","\u0001Build Options||ENABLE_USER_SCRIPT_SANDBOXING","\u0001Deployment||INSTALL_PATH","\u0001Deployment||COPY_PHASE_STRIP","\u0001Deployment||STRIP_INSTALLED_PRODUCT","\u0001Deployment||TARGETED_DEVICE_FAMILY","\u0001Deployment||IPHONEOS_DEPLOYMENT_TARGET","\u0001Localization||LOCALIZATION_PREFERS_STRING_CATALOGS","\u0001Packaging||INFOPLIST_FILE","\u0001Packaging||PRODUCT_NAME","\u0001Search Paths||ALWAYS_SEARCH_USER_PATHS","Apple Clang - Code Generation||GCC_DYNAMIC_NO_PIC","Apple Clang - Code Generation||GCC_NO_COMMON_BLOCKS","Apple Clang - Language||GCC_C_LANGUAGE_STANDARD","Apple Clang - Language - C++||CLANG_CXX_LANGUAGE_STANDARD","Apple Clang - Language - Modules||CLANG_ENABLE_MODULES","Apple Clang - Language - Objective-C||CLANG_ENABLE_OBJC_ARC","Apple Clang - Language - Objective-C||CLANG_ENABLE_OBJC_WEAK","Apple Clang - Preprocessing||ENABLE_STRICT_OBJC_MSGSEND","Apple Clang - Warnings - All languages||CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING","Apple Clang - Warnings - All languages||CLANG_WARN_DOCUMENTATION_COMMENTS","Apple Clang - Warnings - All languages||CLANG_WARN_EMPTY_BODY","Apple Clang - Warnings - All languages||CLANG_WARN_BOOL_CONVERSION","Apple Clang - Warnings - All languages||CLANG_WARN_CONSTANT_CONVERSION","Apple Clang - Warnings - All languages||CLANG_WARN_ENUM_CONVERSION","Apple Clang - Warnings - All languages||CLANG_WARN_INT_CONVERSION","Apple Clang - Warnings - All languages||CLANG_WARN_NON_LITERAL_NULL_CONVERSION","Apple Clang - Warnings - All languages||CLANG_WARN_INFINITE_RECURSION","Apple Clang - Warnings - All languages||GCC_WARN_ABOUT_RETURN_TYPE","Apple Clang - Warnings - All languages||CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER","Apple Clang - Warnings - All languages||CLANG_WARN_STRICT_PROTOTYPES","Apple Clang - Warnings - All languages||CLANG_WARN_COMMA","Apple Clang - Warnings - All languages||CLANG_WARN_UNGUARDED_AVAILABILITY","Apple Clang - Warnings - All languages||GCC_WARN_UNINITIALIZED_AUTOS","Apple Clang - Warnings - All languages||CLANG_WARN_UNREACHABLE_CODE","Apple Clang - Warnings - All languages||GCC_WARN_UNUSED_FUNCTION","Apple Clang - Warnings - All languages||GCC_WARN_UNUSED_VARIABLE","Apple Clang - Warnings - C++||CLANG_WARN_RANGE_LOOP_ANALYSIS","Apple Clang - Warnings - C++||CLANG_WARN_SUSPICIOUS_MOVE","Apple Clang - Warnings - Objective-C||CLANG_WARN_DIRECT_OBJC_ISA_USAGE","Apple Clang - Warnings - Objective-C||CLANG_WARN__DUPLICATE_METHOD_MATCH","Apple Clang - Warnings - Objective-C||CLANG_WARN_OBJC_LITERAL_CONVERSION","Apple Clang - Warnings - Objective-C||CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS","Apple Clang - Warnings - Objective-C||GCC_WARN_UNDECLARED_SELECTOR","Apple Clang - Warnings - Objective-C||CLANG_WARN_OBJC_ROOT_CLASS","Apple Clang - Warnings - Objective-C and ARC||CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF","Asset Catalog Compiler - Options||ASSETCATALOG_COMPILER_GENERATE_SWIFT_ASSET_SYMBOL_EXTENSIONS","Static Analysis - Generic Issues||CLANG_ANALYZER_NONNULL","Static Analysis - Issues - Apple APIs||CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION","Swift Compiler - Language||SWIFT_VERSION","User-Defined||MTL_FAST_MATH"],"Selected Build Properties":[],"Xcode3BuildPropertyNameDisplayMode":1,"Xcode3BuildPropertyValueDisplayMode":0,"Xcode3BuildSettingsEditorDisplayMode":0,"Xcode3BuildSettingsEditorMode":1}]}}</string>
+				</dict>
+				<key>rebasable-url</key>
+				<dict>
+					<key>base</key>
+					<string>workspace</string>
+					<key>payload</key>
+					<dict>
+						<key>relative-path</key>
+						<string>Quotex ES/Quotex ES.xcodeproj</string>
+					</dict>
+				</dict>
+				<key>type</key>
+				<string>Xcode3ProjectDocumentLocation</string>
+			</dict>
+			<key>title</key>
+			<string>Quotex ES Build Settings</string>
+			<key>type</key>
+			<string>bookmark</string>
+		</dict>
+	</array>
+</dict>
+</plist>

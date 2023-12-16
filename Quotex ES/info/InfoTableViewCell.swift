@@ -19,7 +19,7 @@ class InfoTableViewCell: UITableViewCell {
     private lazy var infoDescriptionLabel: UILabel = {
         let label = UILabel()
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 16)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 16)
         label.numberOfLines = 0
         label.textAlignment = .center
         return label
@@ -33,6 +33,7 @@ class InfoTableViewCell: UITableViewCell {
 
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .themeChanged, object: nil)
         setupViews()
         setupConstraints()
     }
@@ -56,10 +57,21 @@ class InfoTableViewCell: UITableViewCell {
         }
     }
 
+    @objc func updateTheme() {
+        let isDarkTheme = ThemeManager.isDarkTheme
+        backgroundColor = isDarkTheme ? .black : .white
+    }
+
+    deinit {
+        NotificationCenter.default.removeObserver(self)
+    }
+
     func configure(with infoItem: InfoItem) {
         infoImageView.image = UIImage(named: infoItem.imageName)
         infoDescriptionLabel.text = infoItem.description
+        updateTheme()
     }
+
 
     override func layoutSubviews() {
         super.layoutSubviews()

@@ -69,7 +69,7 @@ class QuizViewController: UIViewController {
         let label = UILabel()
         label.text = "Thank You!"
         label.textColor = UIColor.white
-        label.font = UIFont.systemFont(ofSize: 28, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Bold", size: 28)
         label.textAlignment = .center
         return label
     }()

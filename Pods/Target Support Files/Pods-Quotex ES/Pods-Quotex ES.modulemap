@@ -1,0 +1,6 @@
+framework module Pods_Quotex_ES {
+  umbrella header "Pods-Quotex ES-umbrella.h"
+
+  export *
+  module * { export * }
+}

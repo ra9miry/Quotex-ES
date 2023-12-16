@@ -40,35 +40,28 @@ class CryptoTableViewCell: UITableViewCell {
     private lazy var cryptocurrencyNameLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 14, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
     private lazy var cryptocurrencyMarketLabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 9)
-        return label
-    }()
-    
-    private lazy var cryptocurrencyPriceLabel: UILabel = {
-        let label = UILabel()
-        label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 10)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 9)
         return label
     }()
     
     private lazy var ourCryptolabel: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 14)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
     }()
     
     private lazy var cryptocurrencyCrypt: UILabel = {
         let label = UILabel()
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 9)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 9)
         return label
     }()
     
@@ -101,7 +94,7 @@ class CryptoTableViewCell: UITableViewCell {
         let label = UILabel()
         label.text = percentLabels.map { $0.text ?? "" }.joined(separator: "\n")
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 12)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
         label.numberOfLines = percentLabels.count
         let paragraphStyle = NSMutableParagraphStyle()
         paragraphStyle.lineSpacing = 9
@@ -120,12 +113,6 @@ class CryptoTableViewCell: UITableViewCell {
     var market: String? {
         didSet {
             cryptocurrencyMarketLabel.text = market
-        }
-    }
-    
-    var price: String? {
-        didSet {
-            cryptocurrencyPriceLabel.text = price
         }
     }
     
@@ -175,7 +162,6 @@ class CryptoTableViewCell: UITableViewCell {
         contentView.addSubview(cryptocurrencyImageView)
         contentView.addSubview(cryptocurrencyNameLabel)
         contentView.addSubview(cryptocurrencyMarketLabel)
-        contentView.addSubview(cryptocurrencyPriceLabel)
         contentView.addSubview(ourCryptolabel)
         contentView.addSubview(cryptocurrencyCrypt)
         
@@ -199,11 +185,6 @@ class CryptoTableViewCell: UITableViewCell {
         
         cryptocurrencyNameLabel.snp.makeConstraints() { make in
             make.top.equalToSuperview().offset(24)
-            make.leading.equalTo(cryptocurrencyImageView.snp.trailing).offset(8)
-        }
-        
-        cryptocurrencyPriceLabel.snp.makeConstraints() { make in
-            make.top.equalTo(cryptocurrencyNameLabel.snp.bottom).offset(6)
             make.leading.equalTo(cryptocurrencyImageView.snp.trailing).offset(8)
         }
         
@@ -253,8 +234,8 @@ class CryptoTableViewCell: UITableViewCell {
         let totalHoldingValue = cryptocurrency.purchasePrice * cryptocurrency.quantity
         self.ourCryptolabel.text = String(format: "$%.2f", totalHoldingValue)
         self.cryptocurrencyCrypt.text = String(format: "%.6f", cryptocurrency.quantity)
-        configurePriceLabel(with: cryptocurrency.name)
         updatePercentagesAndImages()
+        updateTheme()
     }
     
     private func updatePercentagesAndImages() {
@@ -266,24 +247,29 @@ class CryptoTableViewCell: UITableViewCell {
         }
     }
     
-    func configurePriceLabel(with cryptoName: String) {
-        CryptoAPI.fetchPrice(for: cryptoName) { [weak self] price in
-            DispatchQueue.main.async {
-                if let price = price {
-                    self?.cryptocurrencyPriceLabel.text = String(format: "$%.2f", price)
-                } else {
-                    self?.cryptocurrencyPriceLabel.text = "Unavailable"
-                }
-            }
+    func updateTheme() {
+        let isDarkTheme = ThemeManager.isDarkTheme
+
+        let textColor = isDarkTheme ? UIColor.white : UIColor.black
+        let cellBackgroundColor = isDarkTheme ? UIColor.black : UIColor.white
+        let borderColor = isDarkTheme ? UIColor.white.cgColor : UIColor.black.cgColor
+
+        contentView.backgroundColor = cellBackgroundColor
+        cryptocurrencyNameLabel.textColor = textColor
+        cryptocurrencyMarketLabel.textColor = textColor
+        ourCryptolabel.textColor = textColor
+        cryptocurrencyCrypt.textColor = textColor
+        staticTimeLabel.textColor = textColor
+
+        percentLabels.forEach { label in
+            label.textColor = textColor
         }
         
-        
-        func configure(with crypto: String) {
-            CryptoAPI.fetchPrice(for: crypto) { price in
-                DispatchQueue.main.async {
-                    self.cryptocurrencyPriceLabel.text = price ?? "Unavailable"
-                }
-            }
+        for imageView in upDownImageViews {
+            imageView.tintColor = textColor
         }
+        contentView.layer.borderColor = borderColor
+        backgroundColor = cellBackgroundColor
     }
+
 }

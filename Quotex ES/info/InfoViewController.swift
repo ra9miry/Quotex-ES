@@ -22,7 +22,7 @@ class InfoViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let label = UILabel()
         label.text = "Useful Information"
         label.textColor = .white
-        label.font = UIFont.systemFont(ofSize: 20, weight: .bold)
+        label.font = UIFont(name: "SFProDisplay-Bold", size: 20)
         return label
     }()
 
@@ -41,15 +41,24 @@ class InfoViewController: UIViewController, UITableViewDataSource, UITableViewDe
     private var infoMassive: [InfoMassive] = []
 
     override func viewDidLoad() {
-         super.viewDidLoad()
-         view.backgroundColor = .black
-
-         setupViews()
-         setupConstraints()
-         setupInfoData()
+        super.viewDidLoad()
+        setupViews()
+        setupConstraints()
+        setupInfoData()
         setupForAboutData()
+        updateTheme()
         navigationItem.hidesBackButton = true
-     }
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        updateTheme()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        NotificationCenter.default.removeObserver(self, name: .themeChanged, object: nil)
+    }
     
     private func setupViews() {
         view.addSubview(headerView)
@@ -116,7 +125,9 @@ class InfoViewController: UIViewController, UITableViewDataSource, UITableViewDe
         let infoItem = infoItems[indexPath.row]
         cell.configure(with: infoItem)
         let selectedBackgroundView = UIView()
-        selectedBackgroundView.backgroundColor = UIColor(named: "tabbar")
+        selectedBackgroundView.backgroundColor = .clear
+        let isDarkTheme = ThemeManager.isDarkTheme
+        cell.backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
         cell.selectedBackgroundView = selectedBackgroundView
         cell.contentView.backgroundColor = .back
         cell.contentView.layer.cornerRadius = 20
@@ -140,4 +151,33 @@ class InfoViewController: UIViewController, UITableViewDataSource, UITableViewDe
         navigationController?.pushViewController(detailViewController, animated: true)
     }
     
+    @objc private func updateTheme() {
+        let isDarkTheme = ThemeManager.isDarkTheme
+        view.backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
+        infoTableView.backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
+        for cell in infoTableView.visibleCells as? [InfoTableViewCell] ?? [] {
+            cell.updateTheme()
+        }
+    }
+
+    
+    @objc func themeChanged(notification: Notification) {
+        view.backgroundColor = ThemeManager.isDarkTheme ? .black : .white
+        for cell in infoTableView.visibleCells as! [InfoTableViewCell] {
+            cell.updateTheme()
+        }
+    }
+
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        if self.traitCollection.hasDifferentColorAppearance(comparedTo: previousTraitCollection) {
+            updateTheme()
+        }
+    }
 }
+
+extension Notification.Name {
+    static let themeChanged = Notification.Name("themeChanged")
+}
+
