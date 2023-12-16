@@ -72,25 +72,28 @@ class CryptoTableViewCell: UITableViewCell {
         return label
     }()
     
-    private lazy var timePeriodData: [(String, String)] = [
-        ("1H", "+20,50%"),
-        ("1D", "+50,50%"),
-        ("7D", "+125,50%")
+    private lazy var timePeriodData: [(String, Double)] = [
+        ("1H", Double.random(in: -100...100)),
+        ("1D", Double.random(in: -100...100)),
+        ("7D", Double.random(in: -100...100))
     ]
     
     private lazy var percentLabels: [UILabel] = {
         return timePeriodData.map { data in
             let label = UILabel()
-            label.text = data.1
-            label.textColor = UIColor(named: "price")
+            label.text = String(format: "%.2f%%", data.1)
+            label.textColor = data.1 >= 0 ? UIColor(named: "black") : UIColor(named: "black")
             label.font = UIFont.systemFont(ofSize: 12)
             return label
         }
     }()
-    
-    private lazy var upImageViews: [UIImageView] = {
-        return timePeriodData.map { _ in
-            return createUpImageView()
+
+    private lazy var upDownImageViews: [UIImageView] = {
+        return timePeriodData.map { data in
+            let imageView = UIImageView()
+            imageView.image = data.1 >= 0 ? UIImage(named: "up") : UIImage(named: "down")
+            imageView.contentMode = .scaleAspectFit
+            return imageView
         }
     }()
     
@@ -180,7 +183,7 @@ class CryptoTableViewCell: UITableViewCell {
             contentView.addSubview(label)
         }
         
-        upImageViews.forEach { imageView in
+        upDownImageViews.forEach { imageView in
             contentView.addSubview(imageView)
         }
         
@@ -224,13 +227,12 @@ class CryptoTableViewCell: UITableViewCell {
                 make.top.equalToSuperview().offset(14 + i * 18)
             }
             
-            upImageViews[i].snp.makeConstraints() { make in
+            upDownImageViews[i].snp.makeConstraints() { make in
                 make.leading.equalTo(percentLabels[i].snp.trailing).offset(8)
                 make.centerY.equalTo(percentLabels[i])
                 make.width.height.equalTo(12)
             }
         }
-        
     }
     
     private func createUpImageView() -> UIImageView {
@@ -252,6 +254,16 @@ class CryptoTableViewCell: UITableViewCell {
         self.ourCryptolabel.text = String(format: "$%.2f", totalHoldingValue)
         self.cryptocurrencyCrypt.text = String(format: "%.6f", cryptocurrency.quantity)
         configurePriceLabel(with: cryptocurrency.name)
+        updatePercentagesAndImages()
+    }
+    
+    private func updatePercentagesAndImages() {
+        for i in 0..<timePeriodData.count {
+            let data = timePeriodData[i]
+            percentLabels[i].text = String(format: "%.2f%%", data.1)
+            percentLabels[i].textColor = data.1 >= 0 ? UIColor(named: "positiveColor") : UIColor(named: "negativeColor")
+            upDownImageViews[i].image = data.1 >= 0 ? UIImage(named: "up") : UIImage(named: "down")
+        }
     }
     
     func configurePriceLabel(with cryptoName: String) {

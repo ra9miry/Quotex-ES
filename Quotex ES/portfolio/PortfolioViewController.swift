@@ -85,7 +85,7 @@
         
         private lazy var hourMainBalancePortfolioPercent: UILabel = {
             let label = UILabel()
-            label.text = "+20,50%"
+            label.text = randomPositivePercentage()
             label.textColor = UIColor(named: "price")
             label.font = UIFont.systemFont(ofSize: 12)
             return label
@@ -93,7 +93,7 @@
         
         private lazy var dayMainBalancePortfolioPercent: UILabel = {
             let label = UILabel()
-            label.text = "+50,50%"
+            label.text = randomPositivePercentage()
             label.textColor = UIColor(named: "price")
             label.font = UIFont.systemFont(ofSize: 12)
             return label
@@ -101,9 +101,25 @@
         
         private lazy var weekMainBalancePortfolioPercent: UILabel = {
             let label = UILabel()
-            label.text = "+125,50%"
+            label.text = randomPositivePercentage()
             label.textColor = UIColor(named: "price")
             label.font = UIFont.systemFont(ofSize: 12)
+            return label
+        }()
+        
+        private lazy var allUpTimeLabel: UILabel = {
+            let label = UILabel()
+            label.text = randomPositivePercentage()
+            label.textColor = UIColor(named: "price")
+            label.font = UIFont.systemFont(ofSize: 10)
+            return label
+        }()
+        
+        private lazy var allDownTimeLabel: UILabel = {
+            let label = UILabel()
+            label.text = randomNegativePercentage()
+            label.textColor = UIColor(named: "price")
+            label.font = UIFont.systemFont(ofSize: 10)
             return label
         }()
         
@@ -155,22 +171,6 @@
             return label
         }()
         
-        private lazy var allUpTimeLabel: UILabel = {
-            let label = UILabel()
-            label.text = "+ 5 654, 63 %"
-            label.textColor = UIColor(named: "price")
-            label.font = UIFont.systemFont(ofSize: 10)
-            return label
-        }()
-        
-        private lazy var allDownTimeLabel: UILabel = {
-            let label = UILabel()
-            label.text = "- 150, 50 %"
-            label.textColor = UIColor(named: "price")
-            label.font = UIFont.systemFont(ofSize: 10)
-            return label
-        }()
-        
         private lazy var cryptoTableView: UITableView = {
             let tableView = UITableView()
             tableView.dataSource = self
@@ -178,7 +178,7 @@
             tableView.rowHeight = 81
             tableView.register(CryptoTableViewCell.self, forCellReuseIdentifier: "CryptoCell")
             tableView.separatorStyle = .none
-            tableView.backgroundColor = UIColor(named: "totalwh")
+            tableView.backgroundColor = .clear
             return tableView
         }()
         
@@ -201,6 +201,7 @@
             loadCryptocurrencies()
             updateTheme()
         }
+        
         
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
@@ -361,6 +362,16 @@
         private func setupAddButton() {
             plusAddCurrencyButton.addTarget(self, action: #selector(plusAddCurrencyButtonTapped), for: .touchUpInside)
         }
+        
+        private func randomPositivePercentage() -> String {
+            let randomPercent = Double.random(in: 0...100).rounded(toPlaces: 2)
+            return String(format: "+%.2f%%", randomPercent)
+        }
+
+        private func randomNegativePercentage() -> String {
+            let randomPercent = Double.random(in: -100...0).rounded(toPlaces: 2)
+            return String(format: "%.2f%%", randomPercent)
+        }
 
         @objc private func plusAddCurrencyButtonTapped() {
             let addVC = AddViewController()
@@ -394,8 +405,6 @@
                 print("Failed to encode cryptocurrencies: \(error.localizedDescription)")
             }
         }
-
-        // Загрузка данных из UserDefaults
         private func loadCryptocurrencies() {
             if let data = UserDefaults.standard.data(forKey: "cryptocurrencies") {
                 do {
@@ -432,20 +441,16 @@
             
             let cryptocurrency = PortfolioViewController.cryptocurrencies[indexPath.row]
             cell.configure(with: cryptocurrency)
-            cell.configurePriceLabel(with: cryptocurrency.name)
             let selectedBackgroundView = UIView()
-            selectedBackgroundView.backgroundColor = UIColor(named: "totalwh")
+            selectedBackgroundView.backgroundColor = UIColor(named: "black")
             cell.selectedBackgroundView = selectedBackgroundView
-            cell.contentView.backgroundColor = UIColor(named: "totalwh")
             cell.contentView.layer.cornerRadius = 20
             cell.contentView.layer.masksToBounds = true
             cell.contentView.layer.borderWidth = 2
-            cell.backgroundColor = UIColor(named: "totalwh")
             cell.contentView.layoutMargins = UIEdgeInsets(top: 5, left: 0, bottom: 5, right: 0)
             if let borderColor = UIColor(named: "border")?.cgColor {
                 cell.contentView.layer.borderColor = borderColor
             }
-
             return cell
         }
         
@@ -476,40 +481,42 @@
             return 100
         }
         
-        
         @objc private func updateTheme() {
-            if isDarkModeEnabled {
-                view.backgroundColor = UIColor.black
-                headerView.backgroundColor = UIColor.darkGray
-            } else {
-                view.backgroundColor = UIColor.white
-                if let tabbarColor = UIColor(named: "tabbar") {
-                    headerView.backgroundColor = tabbarColor
-                }
+                let isDarkTheme = ThemeManager.isDarkTheme
+
+            view.backgroundColor = isDarkTheme ?  UIColor(named: "white") : UIColor(named: "black")
+                headerView.backgroundColor = isDarkTheme ? UIColor(named: "tabbar") : UIColor(named: "tabbar")
+            usdWalletLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
+                addCurrencyLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
+                totalBalanceLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
+            totalBalanceView.backgroundColor = isDarkTheme ? UIColor(named: "white") : UIColor(named: "back")
+            mainBalancePortfolio.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
+            hourMainBalancePortfolioPercent.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
+                dayMainBalancePortfolioPercent.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
+                weekMainBalancePortfolioPercent.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
+                staticTimeLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
+                allTimeMainLabel.textColor = isDarkTheme ? UIColor(named: "usd") : UIColor(named: "usd")
+                allUpTimeLabel.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
+                allDownTimeLabel.textColor = isDarkTheme ? UIColor(named: "price") : UIColor(named: "white")
+            cryptoTableView.backgroundColor = isDarkTheme ? UIColor(named: "black") : UIColor(named: "white")
+                cryptoTableView.reloadData()
             }
-            
-            let textColor = isDarkModeEnabled ? UIColor.white : UIColor.black
-            usdWalletLabel.textColor = textColor
-            addCurrencyLabel.textColor = textColor
-            totalBalanceLabel.textColor = textColor
-            mainBalancePortfolio.textColor = textColor
-            hourMainBalancePortfolioPercent.textColor = textColor
-            dayMainBalancePortfolioPercent.textColor = textColor
-            weekMainBalancePortfolioPercent.textColor = textColor
-            staticTimeLabel.textColor = textColor
-            allTimeMainLabel.textColor = textColor
-            allUpTimeLabel.textColor = textColor
-            allDownTimeLabel.textColor = textColor
-        }
         
         override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
             super.traitCollectionDidChange(previousTraitCollection)
             
-            // Определить текущую тему при изменении traitCollection
             if self.traitCollection.userInterfaceStyle == .dark {
                 isDarkModeEnabled = true
             } else {
                 isDarkModeEnabled = false
             }
         }
+}
+
+extension Double {
+    func rounded(toPlaces places: Int) -> Double {
+        let divisor = pow(10.0, Double(places))
+        return (self * divisor).rounded() / divisor
+    }
+    
 }

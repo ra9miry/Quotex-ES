@@ -59,7 +59,7 @@ class StatisticsViewController: UIViewController {
     
     private lazy var hourMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
-        label.text = "+20,50%"
+        label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont.systemFont(ofSize: 12)
         return label
@@ -67,7 +67,7 @@ class StatisticsViewController: UIViewController {
     
     private lazy var dayMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
-        label.text = "+50,50%"
+        label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont.systemFont(ofSize: 12)
         return label
@@ -75,9 +75,25 @@ class StatisticsViewController: UIViewController {
     
     private lazy var weekMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
-        label.text = "+125,50%"
+        label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont.systemFont(ofSize: 12)
+        return label
+    }()
+    
+    private lazy var allUpTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = randomPositivePercentage()
+        label.textColor = UIColor(named: "price")
+        label.font = UIFont.systemFont(ofSize: 10)
+        return label
+    }()
+    
+    private lazy var allDownTimeLabel: UILabel = {
+        let label = UILabel()
+        label.text = randomNegativePercentage()
+        label.textColor = UIColor(named: "price")
+        label.font = UIFont.systemFont(ofSize: 10)
         return label
     }()
     
@@ -126,22 +142,6 @@ class StatisticsViewController: UIViewController {
         label.text = "All Time"
         label.textColor = UIColor(named: "usd")
         label.font = UIFont.systemFont(ofSize: 12)
-        return label
-    }()
-    
-    private lazy var allUpTimeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "+ 5 654, 63 %"
-        label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 10)
-        return label
-    }()
-    
-    private lazy var allDownTimeLabel: UILabel = {
-        let label = UILabel()
-        label.text = "- 150, 50 %"
-        label.textColor = UIColor(named: "price")
-        label.font = UIFont.systemFont(ofSize: 10)
         return label
     }()
     
@@ -384,6 +384,22 @@ class StatisticsViewController: UIViewController {
         detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
     
+    private func randomPositivePercentage() -> String {
+        let randomPercent = Double.random(in: 0...100).rounded(toPlaces: 2)
+        return String(format: "+%.2f%%", randomPercent)
+    }
+
+    private func randomNegativePercentage() -> String {
+        let randomPercent = Double.random(in: -100...0).rounded(toPlaces: 2)
+        return String(format: "%.2f%%", randomPercent)
+    }
+    
+    class DollarValueFormatter: NSObject, ValueFormatter {
+        func stringForValue(_ value: Double, entry: ChartDataEntry, dataSetIndex: Int, viewPortHandler: ViewPortHandler?) -> String {
+            return "$" + String(format: "%.2f", value)
+        }
+    }
+    
     private func setupPieChart() {
         var entries: [ChartDataEntry] = []
 
@@ -407,6 +423,8 @@ class StatisticsViewController: UIViewController {
         dataSet.colors = ChartColorTemplates.joyful()
         
         let data = PieChartData(dataSet: dataSet)
+        data.setValueFormatter(DollarValueFormatter() as! ValueFormatter)
+        
         pieChartView.data = data
         pieChartView.notifyDataSetChanged()
         
