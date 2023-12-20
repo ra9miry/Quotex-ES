@@ -77,7 +77,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     private lazy var purchasePriceLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "Purchase Price"
+        label.text = "Purchase Price, $"
         label.textColor = UIColor(named: "usd")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
         return label
@@ -134,7 +134,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
         textField.rightView = rightPaddingView
         textField.rightViewMode = .always
-
         return textField
     }()
 

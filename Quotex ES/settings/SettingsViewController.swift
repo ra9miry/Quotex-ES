@@ -30,7 +30,7 @@ class SettingsViewController: UIViewController {
         let imageView = UIImageView()
         imageView.image = UIImage(named: "set")
         imageView.image = UIImage(named: "setb")
-        imageView.contentMode = .scaleAspectFit
+        imageView.contentMode = .scaleAspectFill
         return imageView
     }()
     
@@ -133,8 +133,6 @@ class SettingsViewController: UIViewController {
             make.top.equalTo(headerView.snp.bottom).offset(32)
             make.leading.equalToSuperview().offset(16)
             make.trailing.equalToSuperview().offset(-16)
-            make.width.equalTo(343)
-            make.height.equalTo(200)
         }
         
         headerNameLabel.snp.makeConstraints() { make in
@@ -165,7 +163,7 @@ class SettingsViewController: UIViewController {
         }
         
         privacyPolicyLabel.snp.makeConstraints() { make in
-            make.top.equalTo(settingsMainImageView.snp.bottom).offset(32)
+            make.top.equalTo(settingsMainImageView.snp.bottom).offset(100)
             make.leading.equalToSuperview().offset(16)
         }
         
