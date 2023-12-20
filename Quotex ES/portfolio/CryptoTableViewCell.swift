@@ -204,12 +204,12 @@ class CryptoTableViewCell: UITableViewCell {
         
         for i in 0..<percentLabels.count {
             percentLabels[i].snp.makeConstraints() { make in
-                make.leading.equalTo(ourCryptolabel.snp.trailing).offset(40)
+                make.trailing.equalTo(upDownImageViews[i].snp.leading).offset(-8)
                 make.top.equalToSuperview().offset(14 + i * 18)
             }
             
             upDownImageViews[i].snp.makeConstraints() { make in
-                make.leading.equalTo(percentLabels[i].snp.trailing).offset(8)
+                make.trailing.equalToSuperview().offset(-16)
                 make.centerY.equalTo(percentLabels[i])
                 make.width.height.equalTo(12)
             }

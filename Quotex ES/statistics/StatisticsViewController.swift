@@ -11,6 +11,8 @@ import Charts
 import DGCharts
 
 class StatisticsViewController: UIViewController {
+    
+    var updateTimer: Timer?
 
     private lazy var headerView: UIView = {
         let header = UIView()
@@ -49,7 +51,7 @@ class StatisticsViewController: UIViewController {
     
     private lazy var mainBalancePortfolio: UILabel = {
         let label = UILabel()
-        label.text = "$23.456,44"
+        label.text = ""
         label.textColor = UIColor(named: "price")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
         return label
@@ -78,22 +80,6 @@ class StatisticsViewController: UIViewController {
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
-        return label
-    }()
-    
-    private lazy var allUpTimeLabel: UILabel = {
-        let label = UILabel()
-        label.text = randomPositivePercentage()
-        label.textColor = UIColor(named: "price")
-        label.font = UIFont(name: "SFProDisplay-Regular", size: 10)
-        return label
-    }()
-    
-    private lazy var allDownTimeLabel: UILabel = {
-        let label = UILabel()
-        label.text = randomNegativePercentage()
-        label.textColor = UIColor(named: "price")
-        label.font = UIFont(name: "SFProDisplay-Regular", size: 10)
         return label
     }()
     
@@ -135,14 +121,6 @@ class StatisticsViewController: UIViewController {
         imageView.image = UIImage(named: "indicator")
         imageView.contentMode = .scaleAspectFit
         return imageView
-    }()
-    
-    private lazy var allTimeMainLabel: UILabel = {
-        let label = UILabel()
-        label.text = "All Time"
-        label.textColor = UIColor(named: "usd")
-        label.font = UIFont.systemFont(ofSize: 12)
-        return label
     }()
     
     private lazy var currencyView: UIView = {
@@ -211,6 +189,10 @@ class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .didChangeTheme, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTotalBalanceFromNotification(_:)), name: NSNotification.Name("PortfolioDataUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyDataChanged"), object: nil)
+        updateTimer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(updatePieChart), userInfo: nil, repeats: true)
         
         setupViews()
         setupConstraints()
@@ -218,6 +200,11 @@ class StatisticsViewController: UIViewController {
         updateTotalBalance()
         updatePieChart()
         updateTheme()
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        updateTimer?.invalidate()
     }
     
     private func setupViews() {
@@ -234,9 +221,6 @@ class StatisticsViewController: UIViewController {
         view.addSubview(upImageViewWeek)
         view.addSubview(downImageView)
         view.addSubview(staticTimeLabel)
-        view.addSubview(allTimeMainLabel)
-        view.addSubview(allUpTimeLabel)
-        view.addSubview(allDownTimeLabel)
         view.addSubview(upImageViewAllTime)
         view.addSubview(downImageViewAllTime)
         view.addSubview(progressIndicatorImage)
@@ -305,36 +289,9 @@ class StatisticsViewController: UIViewController {
         }
         
         progressIndicatorImage.snp.makeConstraints() { make in
-            make.top.equalTo(mainBalancePortfolio.snp.bottom).offset(20)
-            make.leading.equalTo(totalBalanceView.snp.leading).offset(16)
-            make.trailing.equalTo(totalBalanceView.snp.trailing).offset(-16)
-        }
-        
-        allTimeMainLabel.snp.makeConstraints() { make in
             make.top.equalTo(mainBalancePortfolio.snp.bottom).offset(30)
             make.leading.equalTo(totalBalanceView.snp.leading).offset(16)
-        }
-        
-        allUpTimeLabel.snp.makeConstraints() { make in
-            make.top.equalTo(mainBalancePortfolio.snp.bottom).offset(30)
-            make.leading.equalTo(allTimeMainLabel.snp.trailing).offset(120)
-        }
-        
-        allDownTimeLabel.snp.makeConstraints() { make in
-            make.top.equalTo(mainBalancePortfolio.snp.bottom).offset(30)
-            make.trailing.equalTo(downImageViewAllTime.snp.leading).offset(0)
-        }
-        
-        downImageViewAllTime.snp.makeConstraints() { make in
             make.trailing.equalTo(totalBalanceView.snp.trailing).offset(-16)
-            make.centerY.equalTo(allDownTimeLabel.snp.centerY)
-            make.width.height.equalTo(12)
-        }
-        
-        upImageViewAllTime.snp.makeConstraints() { make in
-            make.leading.equalTo(allUpTimeLabel.snp.trailing).offset(0)
-            make.centerY.equalTo(allUpTimeLabel.snp.centerY)
-            make.width.height.equalTo(12)
         }
         
         currencyView.snp.makeConstraints() { make in
@@ -402,6 +359,16 @@ class StatisticsViewController: UIViewController {
         }
     }
     
+    @objc private func updateTotalBalanceFromNotification(_ notification: Notification) {
+        if let totalBalance = notification.userInfo?["totalBalance"] as? Double {
+            mainBalancePortfolio.text = String(format: "$%.2f", totalBalance)
+            let isZeroBalance = totalBalance == 0
+            hourMainBalancePortfolioPercent.text = isZeroBalance ? "0%" : randomPositivePercentage()
+            dayMainBalancePortfolioPercent.text = isZeroBalance ? "0%" : randomPositivePercentage()
+            weekMainBalancePortfolioPercent.text = isZeroBalance ? "0%" : randomPositivePercentage()
+        }
+    }
+    
     private func setupPieChart() {
         var entries: [ChartDataEntry] = []
 
@@ -412,21 +379,21 @@ class StatisticsViewController: UIViewController {
         pieChartView.data = data
     }
     
-    private func updatePieChart() {
+    @objc private func updatePieChart() {
         var entries: [PieChartDataEntry] = []
-        
         for crypto in PortfolioViewController.cryptocurrencies {
             let totalValue = crypto.purchasePrice * crypto.quantity
-            let entry = PieChartDataEntry(value: totalValue, label: crypto.name)
+            let entry = PieChartDataEntry(value: totalValue, label: "")
             entries.append(entry)
         }
 
-        let dataSet = PieChartDataSet(entries: entries, label: "Portfolio Distribution")
+        let dataSet = PieChartDataSet(entries: entries, label: "")
         dataSet.colors = ChartColorTemplates.joyful()
-        
+        dataSet.drawValuesEnabled = false
+
         let data = PieChartData(dataSet: dataSet)
-        data.setValueFormatter(DollarValueFormatter() as! ValueFormatter)
-        
+        data.setValueFormatter(DollarValueFormatter())
+
         pieChartView.data = data
         pieChartView.notifyDataSetChanged()
         
@@ -443,6 +410,7 @@ class StatisticsViewController: UIViewController {
             container.spacing = 5
             detailsStackView.addArrangedSubview(container)
         }
+        pieChartView.notifyDataSetChanged()
     }
     
     private func createColorView(color: UIColor) -> UIView {
@@ -480,7 +448,6 @@ class StatisticsViewController: UIViewController {
         nameChartLabel.text = selectedCrypto.name
         percentChartLabel.text = String(format: "%.2f%%", selectedCrypto.purchasePrice * selectedCrypto.quantity / totalPortfolioBalance * 100)
 
-        // Обновить colorView в соответствии с цветом выбранного сектора
         if let colors = pieChartView.data?.dataSets[0].colors {
             colorView.backgroundColor = colors[selectedIndex % colors.count]
         }
@@ -501,10 +468,7 @@ class StatisticsViewController: UIViewController {
         hourMainBalancePortfolioPercent.textColor = textColor
         dayMainBalancePortfolioPercent.textColor = textColor
         weekMainBalancePortfolioPercent.textColor = textColor
-        allUpTimeLabel.textColor = textColor
-        allDownTimeLabel.textColor = textColor
         staticTimeLabel.textColor = textColor
-        allTimeMainLabel.textColor = textColor
         аllCurrencyLabel.textColor = textColor
         nameChartLabel.textColor = textColor
         percentChartLabel.textColor = textColor

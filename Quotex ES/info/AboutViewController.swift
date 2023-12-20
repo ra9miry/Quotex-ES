@@ -168,10 +168,10 @@ class AboutViewController: UIViewController {
         let isDarkTheme = ThemeManager.isDarkTheme
         
         view.backgroundColor = isDarkTheme ? .black : .white
-        labelForInfoName.textColor = isDarkTheme ? .white : .black
+        labelForInfoName.textColor = isDarkTheme ? .white : .white
         mainNameLabel.textColor = isDarkTheme ? .white : .black
         textLabel.textColor = isDarkTheme ? .white : .black
-        headerView.backgroundColor = UIColor(named: isDarkTheme ? "black" : "white")
+        headerView.backgroundColor = UIColor(named: isDarkTheme ? "tabbar" : "tabbar")
         backButton.setImage(UIImage(named: isDarkTheme ? "back" : "bb"), for: .normal)
     }
     

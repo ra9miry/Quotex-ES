@@ -79,7 +79,7 @@
         
         private lazy var mainBalancePortfolio: UILabel = {
             let label = UILabel()
-            label.text = "$23.456,44"
+            label.text = ""
             label.textColor = UIColor(named: "price")
             label.font = UIFont(name: "SFProDisplay-Regular", size: 20)
             return label
@@ -108,23 +108,7 @@
             label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
             return label
         }()
-        
-        private lazy var allUpTimeLabel: UILabel = {
-            let label = UILabel()
-            label.text = randomPositivePercentage()
-            label.textColor = UIColor(named: "price")
-            label.font = UIFont(name: "SFProDisplay-Regular", size: 10)
-            return label
-        }()
-        
-        private lazy var allDownTimeLabel: UILabel = {
-            let label = UILabel()
-            label.text = randomNegativePercentage()
-            label.textColor = UIColor(named: "price")
-            label.font = UIFont(name: "SFProDisplay-Regular", size: 10)
-            return label
-        }()
-        
+                
         private lazy var upImageViewHour: UIImageView = createUpImageView()
         private lazy var upImageViewDay: UIImageView = createUpImageView()
         private lazy var upImageViewWeek: UIImageView = createUpImageView()
@@ -163,14 +147,6 @@
             imageView.image = UIImage(named: "indicator")
             imageView.contentMode = .scaleAspectFit
             return imageView
-        }()
-        
-        private lazy var allTimeMainLabel: UILabel = {
-            let label = UILabel()
-            label.text = "All Time"
-            label.textColor = UIColor(named: "usd")
-            label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
-            return label
         }()
         
         private lazy var cryptoTableView: UITableView = {
@@ -231,9 +207,6 @@
             view.addSubview(upImageViewWeek)
             view.addSubview(downImageView)
             view.addSubview(staticTimeLabel)
-            view.addSubview(allTimeMainLabel)
-            view.addSubview(allUpTimeLabel)
-            view.addSubview(allDownTimeLabel)
             view.addSubview(upImageViewAllTime)
             view.addSubview(downImageViewAllTime)
             view.addSubview(progressIndicatorImage)
@@ -313,36 +286,9 @@
             }
             
             progressIndicatorImage.snp.makeConstraints() { make in
-                make.top.equalTo(mainBalancePortfolio.snp.bottom).offset(20)
-                make.leading.equalTo(totalBalanceView.snp.leading).offset(16)
-                make.trailing.equalTo(totalBalanceView.snp.trailing).offset(-16)
-            }
-            
-            allTimeMainLabel.snp.makeConstraints() { make in
                 make.top.equalTo(mainBalancePortfolio.snp.bottom).offset(30)
                 make.leading.equalTo(totalBalanceView.snp.leading).offset(16)
-            }
-            
-            allUpTimeLabel.snp.makeConstraints() { make in
-                make.top.equalTo(mainBalancePortfolio.snp.bottom).offset(30)
-                make.leading.equalTo(allTimeMainLabel.snp.trailing).offset(120)
-            }
-            
-            allDownTimeLabel.snp.makeConstraints() { make in
-                make.top.equalTo(mainBalancePortfolio.snp.bottom).offset(30)
-                make.trailing.equalTo(downImageViewAllTime.snp.leading).offset(0)
-            }
-            
-            downImageViewAllTime.snp.makeConstraints() { make in
                 make.trailing.equalTo(totalBalanceView.snp.trailing).offset(-16)
-                make.centerY.equalTo(allDownTimeLabel.snp.centerY)
-                make.width.height.equalTo(12)
-            }
-            
-            upImageViewAllTime.snp.makeConstraints() { make in
-                make.leading.equalTo(allUpTimeLabel.snp.trailing).offset(0)
-                make.centerY.equalTo(allUpTimeLabel.snp.centerY)
-                make.width.height.equalTo(12)
             }
             
             cryptoTableView.snp.makeConstraints() { make in
@@ -383,6 +329,7 @@
                 self?.cryptoTableView.reloadData()
             }
             navigationController?.pushViewController(addVC, animated: true)
+            NotificationCenter.default.post(name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
         }
 
         private func addNewCryptocurrency(_ cryptocurrency: Cryptocurrency) {
@@ -396,7 +343,24 @@
                 return result + Double((crypto.purchasePrice * crypto.quantity))
             }
             mainBalancePortfolio.text = String(format: "$%.2f", totalBalance)
+
+            if totalBalance == 0 {
+                hourMainBalancePortfolioPercent.text = "0%"
+                dayMainBalancePortfolioPercent.text = "0%"
+                weekMainBalancePortfolioPercent.text = "0%"
+            } else {
+                hourMainBalancePortfolioPercent.text = randomPositiveOrNegativePercentage()
+                dayMainBalancePortfolioPercent.text = randomPositiveOrNegativePercentage()
+                weekMainBalancePortfolioPercent.text = randomPositiveOrNegativePercentage()
+            }
+            NotificationCenter.default.post(name: NSNotification.Name("PortfolioDataUpdated"), object: nil, userInfo: ["totalBalance": totalBalance])
         }
+
+        private func randomPositiveOrNegativePercentage() -> String {
+            let randomPercent = Double.random(in: -100...100).rounded(toPlaces: 2)
+            return String(format: "%.2f%%", randomPercent)
+        }
+
         
         private func saveCryptocurrencies() {
             do {
@@ -503,11 +467,6 @@
             weekMainBalancePortfolioPercent.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
             
             staticTimeLabel.textColor = UIColor(named: "usd")
-            allTimeMainLabel.textColor = UIColor(named: "usd")
-
-            allUpTimeLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-            allDownTimeLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-
             cryptoTableView.backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
             cryptoTableView.reloadData()
         }
