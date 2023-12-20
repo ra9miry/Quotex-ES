@@ -219,7 +219,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         return textField
     }()
 
-
     private lazy var datePicker: UIDatePicker = {
         let picker = UIDatePicker()
         picker.preferredDatePickerStyle = .wheels
@@ -253,7 +252,8 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         setupViews()
         setupConstraints()
         dateTextField.inputView = datePicker
-        datePicker.maximumDate = Date()
+        configureDatePicker()
+        dateTextField.text = dateFormatter.string(from: Date())
         updateTheme()
     }
     
@@ -450,10 +450,20 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         view.endEditing(true)
     }
     
+    private func configureDatePicker() {
+        // Устанавливаем сегодняшнюю дату в dateTextField
+        dateTextField.text = dateFormatter.string(from: Date())
+        // Устанавливаем datePicker в качестве inputView для dateTextField
+        dateTextField.inputView = datePicker
+        // Устанавливаем максимальную дату, чтобы пользователь не мог выбрать дату в будущем
+        datePicker.maximumDate = Date()
+        // Вызываем метод dateChanged(_:), чтобы установить сегодняшнюю дату в dateTextField
+        dateChanged(datePicker)
+    }
+
     @objc func dateChanged(_ sender: UIDatePicker) {
-        let formatter = DateFormatter()
-        formatter.dateFormat = "dd.MM.yyyy"
-        dateTextField.text = formatter.string(from: sender.date)
+        // Обновляем текст dateTextField в соответствии с выбранной датой
+        dateTextField.text = dateFormatter.string(from: sender.date)
     }
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
@@ -524,7 +534,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         let backButtonImageName = isDarkTheme ? "back" : "bb"
         let backButtonImage = UIImage(named: backButtonImageName)
         backButton.setImage(backButtonImage, for: .normal)
-
         view.backgroundColor = backgroundColor
         headerView.backgroundColor = UIColor(named: "tabbar")
         labelForInfoName.textColor = .white
@@ -541,5 +550,4 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         quantityTextField.textColor = textColor
         dateTextField.textColor = textColor
     }
-
 }
