@@ -93,8 +93,8 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
-        
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .didChangeTheme, object: nil)
+        
         updateTheme()
         setupViews()
         setupConstraints()
@@ -129,49 +129,91 @@ class SettingsViewController: UIViewController {
             make.centerX.equalTo(headerView.snp.centerX)
         }
         
-        settingsMainImageView.snp.makeConstraints() { make in
+        settingsMainImageView.snp.makeConstraints { make in
             make.top.equalTo(headerView.snp.bottom).offset(32)
+            make.centerX.equalToSuperview()
+            make.leading.greaterThanOrEqualToSuperview().offset(16)
+            make.trailing.lessThanOrEqualToSuperview().offset(-16)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                make.width.equalTo(600)
+                make.height.equalTo(400)
+            } else {
+                make.width.equalTo(343)
+                make.height.equalTo(200)
+            }
+        }
+        
+        let verticalSpacing = UIDevice.current.userInterfaceIdiom == .pad ? 50 : 34
+        let radioButtonSize = UIDevice.current.userInterfaceIdiom == .pad ? 50 : 34
+        
+        headerNameLabel.snp.makeConstraints { make in
+                make.leading.equalTo(settingsMainImageView.snp.leading).offset(16)
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    make.top.equalTo(settingsMainImageView.snp.top).offset(100) // Greater offset for iPad
+                } else {
+                    make.top.equalTo(settingsMainImageView.snp.top).offset(50) // Offset for iPhone
+                }
+            }
+            
+            // Constraints for darkLabel
+            darkLabel.snp.makeConstraints { make in
+                make.leading.equalTo(settingsMainImageView.snp.leading).offset(16)
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    make.top.equalTo(headerNameLabel.snp.bottom).offset(80) // Greater space for iPad
+                } else {
+                    make.top.equalTo(headerNameLabel.snp.bottom).offset(40) // Space for iPhone
+                }
+            }
+            
+            // Constraints for whiteLabel
+            whiteLabel.snp.makeConstraints { make in
+                make.leading.equalTo(settingsMainImageView.snp.leading).offset(16)
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    make.top.equalTo(darkLabel.snp.bottom).offset(44) // Greater space for iPad
+                } else {
+                    make.top.equalTo(darkLabel.snp.bottom).offset(34) // Space for iPhone
+                }
+            }
+            
+        
+            darkThemeRadioButton.snp.makeConstraints { make in
+                make.trailing.equalTo(settingsMainImageView.snp.trailing).offset(-16)
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    make.top.equalTo(headerNameLabel.snp.bottom).offset(74) // Adjust for iPad
+                    make.size.equalTo(44) // Optionally adjust size for iPad
+                } else {
+                    make.top.equalTo(headerNameLabel.snp.bottom).offset(34) // Original offset
+                    make.size.equalTo(34) // Original size
+                }
+            }
+        
+            lightThemeRadioButton.snp.makeConstraints { make in
+                make.trailing.equalTo(settingsMainImageView.snp.trailing).offset(-16)
+                if UIDevice.current.userInterfaceIdiom == .pad {
+                    make.top.equalTo(darkThemeRadioButton.snp.bottom).offset(26) // Greater space for iPad
+                    make.size.equalTo(44) // Optionally adjust size for iPad
+                } else {
+                    make.top.equalTo(darkThemeRadioButton.snp.bottom).offset(16) // Space for iPhone
+                    make.size.equalTo(34) // Original size
+                }
+            }
+        
+        privacyPolicyLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-            make.trailing.equalToSuperview().offset(-16)
-            make.width.equalTo(343)
-            make.height.equalTo(200)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                make.top.equalTo(settingsMainImageView.snp.bottom).offset(100)
+            } else {
+                make.top.equalTo(settingsMainImageView.snp.bottom).offset(32)
+            }
         }
         
-        headerNameLabel.snp.makeConstraints() { make in
-            make.top.equalTo(settingsMainImageView.snp.top).offset(50)
-            make.leading.equalTo(settingsMainImageView.snp.leading).offset(16)
-        }
-        
-        darkLabel.snp.makeConstraints() { make in
-            make.top.equalTo(headerNameLabel.snp.bottom).offset(40)
-            make.leading.equalTo(settingsMainImageView.snp.leading).offset(16)
-        }
-        
-        whiteLabel.snp.makeConstraints() { make in
-            make.top.equalTo(darkLabel.snp.bottom).offset(34)
-            make.leading.equalTo(settingsMainImageView.snp.leading).offset(16)
-        }
-        
-        darkThemeRadioButton.snp.makeConstraints() { make in
-            make.top.equalTo(headerNameLabel.snp.bottom).offset(34)
-            make.trailing.equalTo(settingsMainImageView.snp.trailing).offset(-16)
-            make.size.equalTo(34)
-        }
-        
-        lightThemeRadioButton.snp.makeConstraints() { make in
-            make.top.equalTo(darkThemeRadioButton.snp.bottom).offset(16)
-            make.trailing.equalTo(settingsMainImageView.snp.trailing).offset(-16)
-            make.size.equalTo(34)
-        }
-        
-        privacyPolicyLabel.snp.makeConstraints() { make in
-            make.top.equalTo(settingsMainImageView.snp.bottom).offset(32)
+        termsLabel.snp.makeConstraints { make in
             make.leading.equalToSuperview().offset(16)
-        }
-        
-        termsLabel.snp.makeConstraints() { make in
-            make.top.equalTo(privacyPolicyLabel.snp.bottom).offset(16)
-            make.leading.equalToSuperview().offset(16)
+            if UIDevice.current.userInterfaceIdiom == .pad {
+                make.top.equalTo(privacyPolicyLabel.snp.bottom).offset(20)
+            } else {
+                make.top.equalTo(privacyPolicyLabel.snp.bottom).offset(16)
+            }
         }
     }
     

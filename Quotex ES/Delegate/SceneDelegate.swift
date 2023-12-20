@@ -15,8 +15,18 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let windowScene = (scene as? UIWindowScene) else { return }
 
         window = UIWindow(windowScene: windowScene)
-        let navigationController = UINavigationController(rootViewController: QuizViewController())
+        let hasLaunchedBefore = UserDefaults.standard.bool(forKey: "hasLaunchedBefore")
+        let rootViewController: UIViewController
+        if hasLaunchedBefore {
+            rootViewController = TabBarViewController()
+        } else {
+            rootViewController = QuizViewController()
+            UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
+        }
+        
+        let navigationController = UINavigationController(rootViewController: rootViewController)
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
     }
+
 }

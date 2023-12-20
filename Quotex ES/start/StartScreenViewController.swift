@@ -107,7 +107,10 @@ class StartScreenViewController: UIViewController {
     }
 
     @objc private func continueButtonTapped() {
-        let controller = TabBarViewController()
-        navigationController?.pushViewController(controller, animated: true)
+        let tabBarViewController = TabBarViewController()
+        if let window = UIApplication.shared.windows.first {
+            window.rootViewController = tabBarViewController
+            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+        }
     }
 }

@@ -225,8 +225,11 @@ class QuizViewController: UIViewController {
             updateQuestion()
             return
         }
-        let controller = StartScreenViewController()
-        navigationController?.pushViewController(StartScreenViewController(), animated: true)
+        let tabBarViewController = StartScreenViewController()
+        if let window = UIApplication.shared.windows.first {
+            window.rootViewController = tabBarViewController
+            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
+        }
     }
 
 
