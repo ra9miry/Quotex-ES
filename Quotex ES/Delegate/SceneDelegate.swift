@@ -12,14 +12,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     var window: UIWindow?
 
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
-        guard (scene is UIWindowScene) else { return }
+        guard let windowScene = (scene as? UIWindowScene) else { return }
 
-        let quizViewController = QuizViewController()
-        let navigationController = UINavigationController(rootViewController: quizViewController)
+        window = UIWindow(windowScene: windowScene)
+        let navigationController = UINavigationController(rootViewController: QuizViewController())
         window?.rootViewController = navigationController
         window?.makeKeyAndVisible()
-        
-            let tabBarViewController = TabBarViewController()
-            self.window?.rootViewController = tabBarViewController
     }
 }
