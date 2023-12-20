@@ -77,9 +77,9 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     private lazy var purchasePriceLabel: UILabel = {
         let label = UILabel()
         label.textAlignment = .left
-        label.text = "Purchase Price"
+        label.text = "Purchase Price, $"
         label.textColor = UIColor(named: "usd")
-        label.font = UIFont(name: "SFProDisplay-Regular", size: 14)
+        label.font = UIFont(name: "SFProDisplay-Regular", size: 13)
         return label
     }()
     
@@ -121,6 +121,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         pickerView.backgroundColor = .white
         pickerView.delegate = self
         pickerView.dataSource = self
+        pickerView.selectRow(0, inComponent: 0, animated: false)
         textField.inputView = pickerView
         let toolbar = UIToolbar()
         toolbar.sizeToFit()
