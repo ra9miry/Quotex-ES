@@ -105,7 +105,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     
     private lazy var currencyTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = "Select currency"
+        textField.placeholder = ""
         textField.layer.borderColor = UIColor(named: "border")?.cgColor
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = 10
@@ -118,7 +118,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.leftView = leftPaddingView
         textField.leftViewMode = .always
         let pickerView = UIPickerView()
-        pickerView.backgroundColor = .white
+        pickerView.backgroundColor = UIColor.systemBackground
         pickerView.delegate = self
         pickerView.dataSource = self
         pickerView.selectRow(0, inComponent: 0, animated: false)
@@ -135,7 +135,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         let rightPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
         textField.rightView = rightPaddingView
         textField.rightViewMode = .always
-
         return textField
     }()
 
@@ -149,7 +148,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.textAlignment = .right
         textField.isEnabled = false
-        
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
         textField.rightView = paddingView
         textField.rightViewMode = .always 
@@ -168,7 +166,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.keyboardType = .decimalPad
         textField.inputViewController?.dismissKeyboard()
         textField.keyboardType = .numberPad
-        
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
         textField.rightView = paddingView
         textField.rightViewMode = .always 
@@ -186,7 +183,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.textAlignment = .right
         textField.keyboardType = .decimalPad
         textField.inputViewController?.dismissKeyboard()
-        
         let paddingView = UIView(frame: CGRect(x: 0, y: 0, width: 20, height: textField.frame.height))
         textField.rightView = paddingView
         textField.rightViewMode = .always
@@ -194,7 +190,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.leftViewMode = .always
         return textField
     }()
-
     
     private lazy var dateTextField: UITextField = {
         let textField = UITextField()
@@ -248,6 +243,9 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         view.backgroundColor = .white
         navigationItem.hidesBackButton = true
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .didChangeTheme, object: nil)
+        let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
+        view.addGestureRecognizer(tapGesture)
+        
         saveButton.isEnabled = false
         setupViews()
         setupConstraints()
@@ -451,18 +449,13 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     }
     
     private func configureDatePicker() {
-        // Устанавливаем сегодняшнюю дату в dateTextField
         dateTextField.text = dateFormatter.string(from: Date())
-        // Устанавливаем datePicker в качестве inputView для dateTextField
         dateTextField.inputView = datePicker
-        // Устанавливаем максимальную дату, чтобы пользователь не мог выбрать дату в будущем
         datePicker.maximumDate = Date()
-        // Вызываем метод dateChanged(_:), чтобы установить сегодняшнюю дату в dateTextField
         dateChanged(datePicker)
     }
 
     @objc func dateChanged(_ sender: UIDatePicker) {
-        // Обновляем текст dateTextField в соответствии с выбранной датой
         dateTextField.text = dateFormatter.string(from: sender.date)
     }
     
@@ -486,7 +479,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         fetchPrice(for: selectedCurrency)
         dismissKeyboard()
     }
-
 
     func fetchPrice(for currency: String) {
         let currencyId = mapCurrencyToId(currency: currency)
