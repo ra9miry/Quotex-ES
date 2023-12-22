@@ -349,18 +349,12 @@
                 dayMainBalancePortfolioPercent.text = "0%"
                 weekMainBalancePortfolioPercent.text = "0%"
             } else {
-                hourMainBalancePortfolioPercent.text = randomPositiveOrNegativePercentage()
-                dayMainBalancePortfolioPercent.text = randomPositiveOrNegativePercentage()
-                weekMainBalancePortfolioPercent.text = randomPositiveOrNegativePercentage()
+                hourMainBalancePortfolioPercent.text = randomPositivePercentage()
+                dayMainBalancePortfolioPercent.text = randomPositivePercentage()
+                weekMainBalancePortfolioPercent.text = randomPositivePercentage()
             }
             NotificationCenter.default.post(name: NSNotification.Name("PortfolioDataUpdated"), object: nil, userInfo: ["totalBalance": totalBalance])
         }
-
-        private func randomPositiveOrNegativePercentage() -> String {
-            let randomPercent = Double.random(in: -100...100).rounded(toPlaces: 2)
-            return String(format: "%.2f%%", randomPercent)
-        }
-
         
         private func saveCryptocurrencies() {
             do {

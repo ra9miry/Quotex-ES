@@ -8,7 +8,7 @@
 import UIKit
 import SnapKit
 
-class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource {
+class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDataSource, UITextFieldDelegate {
     
     var onSave: ((Cryptocurrency) -> Void)?
 
@@ -105,7 +105,6 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
     
     private lazy var currencyTextField: UITextField = {
         let textField = UITextField()
-        textField.placeholder = ""
         textField.layer.borderColor = UIColor(named: "border")?.cgColor
         textField.layer.borderWidth = 2.0
         textField.layer.cornerRadius = 10
@@ -113,6 +112,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         textField.font = UIFont.systemFont(ofSize: 16)
         textField.textAlignment = .right
         textField.isEnabled = true
+        textField.delegate = self
         textField.isUserInteractionEnabled = true
         let leftPaddingView = UIView(frame: CGRect(x: 0, y: 0, width: 10, height: 0))
         textField.leftView = leftPaddingView
@@ -246,6 +246,7 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         let tapGesture = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard))
         view.addGestureRecognizer(tapGesture)
         
+        currencyTextField.delegate = self
         saveButton.isEnabled = false
         setupViews()
         setupConstraints()
@@ -472,6 +473,13 @@ class AddViewController: UIViewController, UIPickerViewDelegate, UIPickerViewDat
         func pickerView(_ pickerView: UIPickerView, titleForRow row: Int, forComponent component: Int) -> String? {
             return cryptocurrencies[row]
         }
+    
+    func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
+        if textField == currencyTextField {
+            return false
+        }
+        return true
+    }
     
     func pickerView(_ pickerView: UIPickerView, didSelectRow row: Int, inComponent component: Int) {
         let selectedCurrency = cryptocurrencies[row]
