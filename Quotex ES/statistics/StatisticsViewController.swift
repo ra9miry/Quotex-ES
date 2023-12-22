@@ -192,6 +192,8 @@ class StatisticsViewController: UIViewController {
         NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyDataChanged"), object: nil)
         updateTimer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(updatePieChart), userInfo: nil, repeats: true)
+        NotificationCenter.default.post(name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
         
         setupViews()
         setupConstraints()
@@ -387,27 +389,51 @@ class StatisticsViewController: UIViewController {
     }
     
     @objc private func updatePieChart() {
-        var entries: [PieChartDataEntry] = []
-        for crypto in PortfolioViewController.cryptocurrencies {
-            let totalValue = crypto.purchasePrice * crypto.quantity
-            let entry = PieChartDataEntry(value: totalValue, label: "")
-            entries.append(entry)
+        DispatchQueue.main.async {
+            // Step 1: Calculate total portfolio value
+            let totalPortfolioValue = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
+                return result + (crypto.coinPrice * crypto.quantity)
+            }
+
+            // Ensure the total portfolio value is greater than zero to avoid division by zero
+            guard totalPortfolioValue > 0 else {
+                self.pieChartView.data = nil
+                self.pieChartView.notifyDataSetChanged()
+                return
+            }
+
+            // Step 2: Calculate and create entries for each cryptocurrency
+            var entries: [PieChartDataEntry] = []
+            for crypto in PortfolioViewController.cryptocurrencies {
+                let cryptoValue = crypto.coinPrice * crypto.quantity
+                let percentageOfTotal = (cryptoValue / totalPortfolioValue) * 100
+                let entry = PieChartDataEntry(value: percentageOfTotal)
+                entries.append(entry)
+            }
+
+            // Step 3: Update pie chart data set
+            let dataSet = PieChartDataSet(entries: entries)
+            dataSet.colors = ChartColorTemplates.joyful()
+            
+            // Set this to false to not draw values on the pie slices
+            dataSet.drawValuesEnabled = false
+
+            let data = PieChartData(dataSet: dataSet)
+
+            self.pieChartView.data = data
+            self.pieChartView.notifyDataSetChanged()
+
+            // Step 4: Update details stack view
+            self.updateDetailsStackView()
         }
+    }
 
-        let dataSet = PieChartDataSet(entries: entries, label: "")
-        dataSet.colors = ChartColorTemplates.joyful()
-        dataSet.drawValuesEnabled = false
-
-        let data = PieChartData(dataSet: dataSet)
-        data.setValueFormatter(DollarValueFormatter())
-
-        pieChartView.data = data
-        pieChartView.notifyDataSetChanged()
-        
+    
+    private func updateDetailsStackView() {
         detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
-        
+
         for (index, crypto) in PortfolioViewController.cryptocurrencies.enumerated() {
-            let color = dataSet.colors[index % dataSet.colors.count]
+            let color = ChartColorTemplates.joyful()[index % ChartColorTemplates.joyful().count]
             let colorView = createColorView(color: color)
             let nameLabel = createNameLabel(with: crypto.name)
             let percentLabel = createPercentLabel(with: crypto)
@@ -417,7 +443,6 @@ class StatisticsViewController: UIViewController {
             container.spacing = 5
             detailsStackView.addArrangedSubview(container)
         }
-        pieChartView.notifyDataSetChanged()
     }
     
     func didUpdatePortfolio() {
@@ -445,23 +470,11 @@ class StatisticsViewController: UIViewController {
 
     private func createPercentLabel(with crypto: Cryptocurrency) -> UILabel {
         let label = UILabel()
-        let percentValue = (crypto.purchasePrice * crypto.quantity / totalPortfolioBalance) * 100
+        let percentValue = (crypto.coinPrice * crypto.quantity / totalPortfolioBalance) * 100
         label.text = String(format: "%.2f%%", percentValue)
         label.textColor = UIColor(named: "price")
         label.font = UIFont.systemFont(ofSize: 12)
         return label
-    }
-    
-    private func updateChartDetailViews(selectedIndex: Int) {
-        guard selectedIndex < PortfolioViewController.cryptocurrencies.count else { return }
-
-        let selectedCrypto = PortfolioViewController.cryptocurrencies[selectedIndex]
-        nameChartLabel.text = selectedCrypto.name
-        percentChartLabel.text = String(format: "%.2f%%", selectedCrypto.purchasePrice * selectedCrypto.quantity / totalPortfolioBalance * 100)
-
-        if let colors = pieChartView.data?.dataSets[0].colors {
-            colorView.backgroundColor = colors[selectedIndex % colors.count]
-        }
     }
     
     @objc private func updateTheme() {
