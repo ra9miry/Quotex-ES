@@ -8,9 +8,14 @@
     import UIKit
     import SnapKit
 
+protocol PortfolioViewControllerDelegate: AnyObject {
+    func didUpdateCryptocurrencies()
+}
+
     class PortfolioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         static var cryptocurrencies: [Cryptocurrency] = []
+        weak var delegate: PortfolioViewControllerDelegate?
         
         // MARK: - UI Components
         
@@ -343,6 +348,10 @@
             cryptoTableView.reloadData()
         }
         
+        func newChart() {
+            delegate?.didUpdateCryptocurrencies()
+        }
+        
         func updatePortfolioData() {
             hourMainBalancePortfolioPercent.text = PortfolioData.shared.hourPercentage
             dayMainBalancePortfolioPercent.text = PortfolioData.shared.dayPercentage
@@ -491,5 +500,4 @@ extension Double {
         let divisor = pow(10.0, Double(places))
         return (self * divisor).rounded() / divisor
     }
-    
 }

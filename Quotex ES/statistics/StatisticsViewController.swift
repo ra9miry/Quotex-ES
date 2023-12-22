@@ -197,13 +197,13 @@ class StatisticsViewController: UIViewController {
         setupConstraints()
         setupPieChart()
         updateTotalBalance()
-        updatePieChart()
         updateTheme()
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         updateTimer?.invalidate()
+        updatePieChart()
         hourMainBalancePortfolioPercent.text = PortfolioData.shared.hourPercentage
         dayMainBalancePortfolioPercent.text = PortfolioData.shared.dayPercentage
         weekMainBalancePortfolioPercent.text = PortfolioData.shared.weekPercentage
@@ -420,6 +420,10 @@ class StatisticsViewController: UIViewController {
         pieChartView.notifyDataSetChanged()
     }
     
+    func didUpdatePortfolio() {
+        updatePieChart()
+    }
+    
     private func createColorView(color: UIColor) -> UIView {
         let view = UIView()
         view.backgroundColor = color
@@ -490,5 +494,11 @@ class StatisticsViewController: UIViewController {
                 }
             }
         }
+    }
+}
+
+extension StatisticsViewController: PortfolioViewControllerDelegate {
+    func didUpdateCryptocurrencies() {
+        updatePieChart()
     }
 }
