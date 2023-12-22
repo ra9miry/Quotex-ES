@@ -183,6 +183,11 @@
         
         override func viewWillAppear(_ animated: Bool) {
             super.viewWillAppear(animated)
+            hourMainBalancePortfolioPercent.text = PortfolioData.shared.hourPercentage
+            dayMainBalancePortfolioPercent.text = PortfolioData.shared.dayPercentage
+            weekMainBalancePortfolioPercent.text = PortfolioData.shared.weekPercentage
+            
+            updatePortfolioData()
             cryptoTableView.reloadData()
             updateTotalBalance()
             saveCryptocurrencies()
@@ -337,10 +342,17 @@
             updateTotalBalance()
             cryptoTableView.reloadData()
         }
+        
+        func updatePortfolioData() {
+            hourMainBalancePortfolioPercent.text = PortfolioData.shared.hourPercentage
+            dayMainBalancePortfolioPercent.text = PortfolioData.shared.dayPercentage
+            weekMainBalancePortfolioPercent.text = PortfolioData.shared.weekPercentage
+        }
+
 
         private func updateTotalBalance() {
             let totalBalance = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
-                return result + Double((crypto.purchasePrice * crypto.quantity))
+                return result + (crypto.coinPrice * crypto.quantity) 
             }
             mainBalancePortfolio.text = String(format: "$%.2f", totalBalance)
 
@@ -349,9 +361,9 @@
                 dayMainBalancePortfolioPercent.text = "0%"
                 weekMainBalancePortfolioPercent.text = "0%"
             } else {
-                hourMainBalancePortfolioPercent.text = randomPositivePercentage()
-                dayMainBalancePortfolioPercent.text = randomPositivePercentage()
-                weekMainBalancePortfolioPercent.text = randomPositivePercentage()
+                hourMainBalancePortfolioPercent.text = PortfolioData.shared.hourPercentage
+                dayMainBalancePortfolioPercent.text = PortfolioData.shared.dayPercentage
+                weekMainBalancePortfolioPercent.text = PortfolioData.shared.weekPercentage
             }
             NotificationCenter.default.post(name: NSNotification.Name("PortfolioDataUpdated"), object: nil, userInfo: ["totalBalance": totalBalance])
         }

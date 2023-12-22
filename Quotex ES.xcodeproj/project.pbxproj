@@ -38,6 +38,7 @@
 		512E0B4B2B2ABF1000EA3D9E /* Crypto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */; };
 		512E0B4D2B2B05B500EA3D9E /* CoinsAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4C2B2B05B500EA3D9E /* CoinsAPI.swift */; };
 		512E0B502B2B474600EA3D9E /* ThemeMenager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 512E0B4F2B2B474600EA3D9E /* ThemeMenager.swift */; };
+		5144D2D12B360E370058B2FE /* PortfolioData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5144D2D02B360E370058B2FE /* PortfolioData.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -75,6 +76,7 @@
 		512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Crypto.swift; sourceTree = "<group>"; };
 		512E0B4C2B2B05B500EA3D9E /* CoinsAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoinsAPI.swift; sourceTree = "<group>"; };
 		512E0B4F2B2B474600EA3D9E /* ThemeMenager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ThemeMenager.swift; sourceTree = "<group>"; };
+		5144D2D02B360E370058B2FE /* PortfolioData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PortfolioData.swift; sourceTree = "<group>"; };
 		F3D9D59BE1BECA90C104815D /* Pods-Quotex ES.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Quotex ES.release.xcconfig"; path = "Target Support Files/Pods-Quotex ES/Pods-Quotex ES.release.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -181,6 +183,7 @@
 				512E0B482B296C5B00EA3D9E /* AddViewController.swift */,
 				512E0B4A2B2ABF1000EA3D9E /* Crypto.swift */,
 				512E0B4C2B2B05B500EA3D9E /* CoinsAPI.swift */,
+				5144D2D02B360E370058B2FE /* PortfolioData.swift */,
 			);
 			path = portfolio;
 			sourceTree = "<group>";
@@ -373,6 +376,7 @@
 				511E14EA2B25B3CA0018F508 /* InfoViewController.swift in Sources */,
 				511E14D12B25B11D0018F508 /* StartScreenViewController.swift in Sources */,
 				512E0B4B2B2ABF1000EA3D9E /* Crypto.swift in Sources */,
+				5144D2D12B360E370058B2FE /* PortfolioData.swift in Sources */,
 				511E14D02B25B11D0018F508 /* SettingsViewController.swift in Sources */,
 				512E0B502B2B474600EA3D9E /* ThemeMenager.swift in Sources */,
 				511E14DF2B25B24A0018F508 /* PortfolioViewController.swift in Sources */,

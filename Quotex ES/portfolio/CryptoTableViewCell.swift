@@ -227,16 +227,19 @@ class CryptoTableViewCell: UITableViewCell {
         if let imageName = cryptocurrencyImages[cryptocurrency.name] {
             self.cryptocurrencyImageView.image = UIImage(named: imageName)
         } else {
-            self.cryptocurrencyImageView.image = UIImage(named: "image")
+            self.cryptocurrencyImageView.image = UIImage(named: "default_crypto_image")
         }
         self.cryptocurrencyNameLabel.text = cryptocurrency.name
         self.cryptocurrencyMarketLabel.text = "Binance"
-        let totalHoldingValue = cryptocurrency.purchasePrice * cryptocurrency.quantity
+        
+        let totalHoldingValue = cryptocurrency.coinPrice * cryptocurrency.quantity
         self.ourCryptolabel.text = String(format: "$%.2f", totalHoldingValue)
+
         self.cryptocurrencyCrypt.text = String(format: "%.6f", cryptocurrency.quantity)
         updatePercentagesAndImages()
         updateTheme()
     }
+
     
     private func updatePercentagesAndImages() {
         for i in 0..<timePeriodData.count {

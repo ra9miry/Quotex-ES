@@ -184,7 +184,6 @@ class StatisticsViewController: UIViewController {
         return stackView
     }()
 
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
@@ -205,6 +204,9 @@ class StatisticsViewController: UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         super.viewWillDisappear(animated)
         updateTimer?.invalidate()
+        hourMainBalancePortfolioPercent.text = PortfolioData.shared.hourPercentage
+        dayMainBalancePortfolioPercent.text = PortfolioData.shared.dayPercentage
+        weekMainBalancePortfolioPercent.text = PortfolioData.shared.weekPercentage
     }
     
     private func setupViews() {
@@ -335,9 +337,14 @@ class StatisticsViewController: UIViewController {
         }
     }
     
+    private func updatePercentages() {
+        let randomPercent = Double.random(in: 0...100).rounded(toPlaces: 2)
+        let percentageString = String(format: "+%.2f%%", randomPercent)
+    }
+    
     private func updateTotalBalance() {
         totalPortfolioBalance = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
-            return result + (crypto.purchasePrice * crypto.quantity)
+            return result + (crypto.coinPrice * crypto.quantity)
         }
         mainBalancePortfolio.text = String(format: "$%.2f", totalPortfolioBalance)
         detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
