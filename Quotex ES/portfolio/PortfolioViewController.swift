@@ -422,6 +422,7 @@ protocol PortfolioViewControllerDelegate: AnyObject {
             
             let cryptocurrency = PortfolioViewController.cryptocurrencies[indexPath.row]
             cell.configure(with: cryptocurrency)
+            delegate?.didUpdateCryptocurrencies()
             let selectedBackgroundView = UIView()
             selectedBackgroundView.backgroundColor = UIColor(named: "black")
             cell.selectedBackgroundView = selectedBackgroundView

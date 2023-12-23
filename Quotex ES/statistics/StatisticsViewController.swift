@@ -195,6 +195,9 @@ class StatisticsViewController: UIViewController {
         NotificationCenter.default.post(name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
         updateTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePieChart), userInfo: nil, repeats: true)
+        if let portfolioVC = self.tabBarController?.viewControllers?.compactMap({ $0 as? PortfolioViewController }).first {
+            portfolioVC.delegate = self
+        }
         
         setupViews()
         setupConstraints()
@@ -210,6 +213,12 @@ class StatisticsViewController: UIViewController {
         hourMainBalancePortfolioPercent.text = PortfolioData.shared.hourPercentage
         dayMainBalancePortfolioPercent.text = PortfolioData.shared.dayPercentage
         weekMainBalancePortfolioPercent.text = PortfolioData.shared.weekPercentage
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if let portfolioVC = segue.destination as? PortfolioViewController {
+            portfolioVC.delegate = self
+        }
     }
     
     private func setupViews() {
@@ -394,34 +403,41 @@ class StatisticsViewController: UIViewController {
             let totalPortfolioValue = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
                 return result + (crypto.coinPrice * crypto.quantity)
             }
+            self.totalPortfolioBalance = totalPortfolioValue // Update the total portfolio balance.
+
             guard totalPortfolioValue > 0 else {
                 self.pieChartView.data = nil
                 self.pieChartView.notifyDataSetChanged()
                 return
             }
+
             var entries: [PieChartDataEntry] = []
             for crypto in PortfolioViewController.cryptocurrencies {
                 let cryptoValue = crypto.coinPrice * crypto.quantity
                 let percentageOfTotal = (cryptoValue / totalPortfolioValue) * 100
-                let entry = PieChartDataEntry(value: percentageOfTotal)
+                let entry = PieChartDataEntry(value: percentageOfTotal, label: crypto.name)
                 entries.append(entry)
             }
+
             let dataSet = PieChartDataSet(entries: entries)
-            dataSet.colors = ChartColorTemplates.joyful()
-            dataSet.drawValuesEnabled = false
+            dataSet.colors = PortfolioViewController.cryptocurrencies.map { self.colorForCrypto(name: $0.name) }
+            dataSet.valueLineColor = .clear
+            dataSet.valueTextColor = .clear
+
             let data = PieChartData(dataSet: dataSet)
+            data.setValueFormatter(DefaultValueFormatter(decimals: 2))
+
             self.pieChartView.data = data
             self.pieChartView.notifyDataSetChanged()
             self.updateDetailsStackView()
         }
     }
-    
+
     private func updateDetailsStackView() {
         detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
 
-        for (index, crypto) in PortfolioViewController.cryptocurrencies.enumerated() {
-            let color = ChartColorTemplates.joyful()[index % ChartColorTemplates.joyful().count]
-            let colorView = createColorView(color: color)
+        for crypto in PortfolioViewController.cryptocurrencies {
+            let colorView = createColorView(color: self.colorForCrypto(name: crypto.name))
             let nameLabel = createNameLabel(with: crypto.name)
             let percentLabel = createPercentLabel(with: crypto)
 
@@ -430,6 +446,7 @@ class StatisticsViewController: UIViewController {
             container.spacing = 5
             detailsStackView.addArrangedSubview(container)
         }
+        detailsStackView.layoutIfNeeded()
     }
     
     func didUpdatePortfolio() {
@@ -442,16 +459,58 @@ class StatisticsViewController: UIViewController {
         view.layer.cornerRadius = 6
         view.clipsToBounds = true
         view.snp.makeConstraints { make in
-            make.width.height.equalTo(12)
-        }
+             make.width.height.equalTo(12)
+         }
         return view
     }
     
+    private func colorForCrypto(name: String) -> UIColor {
+        switch name {
+        case "Bitcoin":
+            return UIColor.orange
+        case "Ethereum":
+            return UIColor.blue
+        case "Ripple":
+            return UIColor.cyan
+        case "Litecoin":
+            return UIColor.lightGray
+        case "Dash":
+            return UIColor.darkGray
+        case "Monero":
+            return UIColor.purple
+        case "NEM":
+            return UIColor.green
+        case "NEO":
+            return UIColor.magenta
+        case "IOTA":
+            return UIColor.brown
+        case "Cardano":
+            return UIColor.yellow
+        case "Polkadot":
+            return UIColor.red
+        case "Solana":
+            return UIColor.blue
+        case "Dogecoin":
+            return UIColor.orange
+        case "Chainlink":
+            return UIColor.link
+        case "Binance Coin":
+            return UIColor.black
+        case "Tether":
+            return UIColor.systemTeal
+        case "Stellar":
+            return UIColor.systemIndigo
+        default:
+            return UIColor.gray
+        }
+    }
+
+
     private func createNameLabel(with name: String) -> UILabel {
         let label = UILabel()
         label.text = name
-        label.textColor = UIColor(named: "usd")
         label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor(named: "usd") // Assuming you have a color set named "usd"
         return label
     }
 
@@ -459,8 +518,8 @@ class StatisticsViewController: UIViewController {
         let label = UILabel()
         let percentValue = (crypto.coinPrice * crypto.quantity / totalPortfolioBalance) * 100
         label.text = String(format: "%.2f%%", percentValue)
-        label.textColor = UIColor(named: "price")
         label.font = UIFont.systemFont(ofSize: 12)
+        label.textColor = UIColor(named: "price") // Assuming you have a color set named "price"
         return label
     }
     
@@ -496,8 +555,8 @@ class StatisticsViewController: UIViewController {
     }
 }
 
-extension StatisticsViewController: CryptoTableViewCellDelegate {
-    func didUpdateCryptoData() {
+extension StatisticsViewController: PortfolioViewControllerDelegate {
+    func didUpdateCryptocurrencies() {
         updatePieChart()
     }
 }
