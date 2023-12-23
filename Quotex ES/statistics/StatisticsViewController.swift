@@ -194,6 +194,7 @@ class StatisticsViewController: UIViewController {
         updateTimer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(updatePieChart), userInfo: nil, repeats: true)
         NotificationCenter.default.post(name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
+        updateTimer = Timer.scheduledTimer(timeInterval: 1.0, target: self, selector: #selector(updatePieChart), userInfo: nil, repeats: true)
         
         setupViews()
         setupConstraints()
@@ -390,19 +391,14 @@ class StatisticsViewController: UIViewController {
     
     @objc private func updatePieChart() {
         DispatchQueue.main.async {
-            // Step 1: Calculate total portfolio value
             let totalPortfolioValue = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
                 return result + (crypto.coinPrice * crypto.quantity)
             }
-
-            // Ensure the total portfolio value is greater than zero to avoid division by zero
             guard totalPortfolioValue > 0 else {
                 self.pieChartView.data = nil
                 self.pieChartView.notifyDataSetChanged()
                 return
             }
-
-            // Step 2: Calculate and create entries for each cryptocurrency
             var entries: [PieChartDataEntry] = []
             for crypto in PortfolioViewController.cryptocurrencies {
                 let cryptoValue = crypto.coinPrice * crypto.quantity
@@ -410,24 +406,15 @@ class StatisticsViewController: UIViewController {
                 let entry = PieChartDataEntry(value: percentageOfTotal)
                 entries.append(entry)
             }
-
-            // Step 3: Update pie chart data set
             let dataSet = PieChartDataSet(entries: entries)
             dataSet.colors = ChartColorTemplates.joyful()
-            
-            // Set this to false to not draw values on the pie slices
             dataSet.drawValuesEnabled = false
-
             let data = PieChartData(dataSet: dataSet)
-
             self.pieChartView.data = data
             self.pieChartView.notifyDataSetChanged()
-
-            // Step 4: Update details stack view
             self.updateDetailsStackView()
         }
     }
-
     
     private func updateDetailsStackView() {
         detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
@@ -479,7 +466,6 @@ class StatisticsViewController: UIViewController {
     
     @objc private func updateTheme() {
         let isDarkTheme = ThemeManager.isDarkTheme
-        
         let textColor = isDarkTheme ? UIColor.white : UIColor.black
         let backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
 
@@ -510,8 +496,8 @@ class StatisticsViewController: UIViewController {
     }
 }
 
-extension StatisticsViewController: PortfolioViewControllerDelegate {
-    func didUpdateCryptocurrencies() {
+extension StatisticsViewController: CryptoTableViewCellDelegate {
+    func didUpdateCryptoData() {
         updatePieChart()
     }
 }
