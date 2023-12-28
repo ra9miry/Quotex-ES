@@ -53,13 +53,14 @@ protocol PortfolioViewControllerDelegate: AnyObject {
         }()
         
         private lazy var plusAddCurrencyButton: UIButton = {
-            let button = UIButton()
+            let button = UIButton(type: .system)
             let image = UIImage(named: "plus")
             button.setImage(image, for: .normal)
             button.imageView?.contentMode = .scaleAspectFit
             button.titleLabel?.font = UIFont(name: "SFProDisplay-Regular", size: 16)
             button.contentEdgeInsets = UIEdgeInsets(top: 8, left: 8, bottom: 8, right: 8)
             button.addTarget(self, action: #selector(plusAddCurrencyButtonTapped), for: .touchUpInside)
+            print("erererer")
             return button
         }()
         

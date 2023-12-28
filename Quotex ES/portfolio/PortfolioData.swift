@@ -22,7 +22,7 @@ class PortfolioData {
 
     private func startUpdatingEveryMinute() {
         updateTimer = Timer.scheduledTimer(timeInterval: 60.0, target: self, selector: #selector(updatePercentages), userInfo: nil, repeats: true)
-        updateTimer?.fire()  // Fire immediately for the first time
+        updateTimer?.fire()
     }
 
     @objc private func updatePercentages() {
@@ -33,8 +33,6 @@ class PortfolioData {
         hourPercentage = String(format: "+%.2f%%", hour)
         dayPercentage = String(format: "+%.2f%%", day)
         weekPercentage = String(format: "+%.2f%%", week)
-
-        // Post a notification if needed
         NotificationCenter.default.post(name: NSNotification.Name("PortfolioDataUpdated"), object: nil)
     }
     

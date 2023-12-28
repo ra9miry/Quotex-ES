@@ -61,6 +61,7 @@ class StatisticsViewController: UIViewController {
     
     private lazy var hourMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
+        label.text = "0%"
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
@@ -69,6 +70,7 @@ class StatisticsViewController: UIViewController {
     
     private lazy var dayMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
+        label.text = "0%"
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
@@ -77,6 +79,7 @@ class StatisticsViewController: UIViewController {
     
     private lazy var weekMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
+        label.text = "0%"
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
@@ -349,19 +352,23 @@ class StatisticsViewController: UIViewController {
         }
     }
     
-    private func updatePercentages() {
-        let randomPercent = Double.random(in: 0...100).rounded(toPlaces: 2)
-        let percentageString = String(format: "+%.2f%%", randomPercent)
+    private func updatePercentageLabels() {
+        let balance = totalPortfolioBalance
+        let percentageText = balance == 0 ? "0%" : PortfolioData.shared.hourPercentage
+        hourMainBalancePortfolioPercent.text = percentageText
+        dayMainBalancePortfolioPercent.text = percentageText
+        weekMainBalancePortfolioPercent.text = percentageText
     }
-    
+
     private func updateTotalBalance() {
         totalPortfolioBalance = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
             return result + (crypto.coinPrice * crypto.quantity)
         }
-        mainBalancePortfolio.text = String(format: "$%.2f", totalPortfolioBalance)
+        mainBalancePortfolio.text = totalPortfolioBalance == 0 ? "$0.00" : String(format: "$%.2f", totalPortfolioBalance)
+        updatePercentageLabels()
         detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
-    
+
     private func randomPositivePercentage() -> String {
         let randomPercent = Double.random(in: 0...100).rounded(toPlaces: 2)
         return String(format: "+%.2f%%", randomPercent)
@@ -403,7 +410,7 @@ class StatisticsViewController: UIViewController {
             let totalPortfolioValue = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
                 return result + (crypto.coinPrice * crypto.quantity)
             }
-            self.totalPortfolioBalance = totalPortfolioValue // Update the total portfolio balance.
+            self.totalPortfolioBalance = totalPortfolioValue
 
             guard totalPortfolioValue > 0 else {
                 self.pieChartView.data = nil
