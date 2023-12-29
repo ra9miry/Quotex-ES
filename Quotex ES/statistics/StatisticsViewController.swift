@@ -61,7 +61,6 @@ class StatisticsViewController: UIViewController {
     
     private lazy var hourMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
-        label.text = "0%"
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
@@ -70,7 +69,6 @@ class StatisticsViewController: UIViewController {
     
     private lazy var dayMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
-        label.text = "0%"
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
@@ -79,7 +77,6 @@ class StatisticsViewController: UIViewController {
     
     private lazy var weekMainBalancePortfolioPercent: UILabel = {
         let label = UILabel()
-        label.text = "0%"
         label.text = randomPositivePercentage()
         label.textColor = UIColor(named: "price")
         label.font = UIFont(name: "SFProDisplay-Regular", size: 12)
@@ -191,6 +188,7 @@ class StatisticsViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor.white
         NotificationCenter.default.addObserver(self, selector: #selector(updateTheme), name: .didChangeTheme, object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(updateTotalBalanceFromNotification(_:)), name: NSNotification.Name("PortfolioDataUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyListUpdated"), object: nil)
         NotificationCenter.default.addObserver(self, selector: #selector(updatePieChart), name: NSNotification.Name("CryptocurrencyDataChanged"), object: nil)
         updateTimer = Timer.scheduledTimer(timeInterval: 10.0, target: self, selector: #selector(updatePieChart), userInfo: nil, repeats: true)
@@ -351,23 +349,19 @@ class StatisticsViewController: UIViewController {
         }
     }
     
-    private func updatePercentageLabels() {
-        let balance = totalPortfolioBalance
-        let percentageText = balance == 0 ? "0%" : PortfolioData.shared.hourPercentage
-        hourMainBalancePortfolioPercent.text = percentageText
-        dayMainBalancePortfolioPercent.text = percentageText
-        weekMainBalancePortfolioPercent.text = percentageText
+    private func updatePercentages() {
+        let randomPercent = Double.random(in: 0...100).rounded(toPlaces: 2)
+        let percentageString = String(format: "+%.2f%%", randomPercent)
     }
-
+    
     private func updateTotalBalance() {
         totalPortfolioBalance = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
             return result + (crypto.coinPrice * crypto.quantity)
         }
-        mainBalancePortfolio.text = totalPortfolioBalance == 0 ? "$0.00" : String(format: "$%.2f", totalPortfolioBalance)
-        updatePercentageLabels()
+        mainBalancePortfolio.text = String(format: "$%.2f", totalPortfolioBalance)
         detailsStackView.arrangedSubviews.forEach { $0.removeFromSuperview() }
     }
-
+    
     private func randomPositivePercentage() -> String {
         let randomPercent = Double.random(in: 0...100).rounded(toPlaces: 2)
         return String(format: "+%.2f%%", randomPercent)
@@ -383,23 +377,15 @@ class StatisticsViewController: UIViewController {
             return "$" + String(format: "%.2f", value)
         }
     }
-
-    private func updateTotalBalanceFromNotification() {
-        let totalBalance = PortfolioViewController.cryptocurrencies.reduce(0) { (result, crypto) -> Double in
-            return result + (crypto.coinPrice * crypto.quantity)
+    
+    @objc private func updateTotalBalanceFromNotification(_ notification: Notification) {
+        if let totalBalance = notification.userInfo?["totalBalance"] as? Double {
+            mainBalancePortfolio.text = String(format: "$%.2f", totalBalance)
+            let isZeroBalance = totalBalance == 0
+            hourMainBalancePortfolioPercent.text = isZeroBalance ? "0%" : randomPositivePercentage()
+            dayMainBalancePortfolioPercent.text = isZeroBalance ? "0%" : randomPositivePercentage()
+            weekMainBalancePortfolioPercent.text = isZeroBalance ? "0%" : randomPositivePercentage()
         }
-        mainBalancePortfolio.text = String(format: "$%.2f", totalBalance)
-
-        if totalBalance == 0 {
-            hourMainBalancePortfolioPercent.text = "0%"
-            dayMainBalancePortfolioPercent.text = "0%"
-            weekMainBalancePortfolioPercent.text = "0%"
-        } else {
-            hourMainBalancePortfolioPercent.text = PortfolioData.shared.hourPercentage
-            dayMainBalancePortfolioPercent.text = PortfolioData.shared.dayPercentage
-            weekMainBalancePortfolioPercent.text = PortfolioData.shared.weekPercentage
-        }
-        NotificationCenter.default.post(name: NSNotification.Name("PortfolioDataUpdated"), object: nil, userInfo: ["totalBalance": totalBalance])
     }
     
     private func setupPieChart() {

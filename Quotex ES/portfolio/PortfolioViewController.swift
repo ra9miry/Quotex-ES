@@ -12,6 +12,10 @@ protocol PortfolioViewControllerDelegate: AnyObject {
     func didUpdateCryptocurrencies()
 }
 
+protocol PortfolioViewControllerDataDelegate: AnyObject {
+    func didReceiveMainBalancePortfolioData(balance: String)
+}
+
     class PortfolioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         static var cryptocurrencies: [Cryptocurrency] = []
