@@ -12,10 +12,6 @@ protocol PortfolioViewControllerDelegate: AnyObject {
     func didUpdateCryptocurrencies()
 }
 
-protocol PortfolioViewControllerDataDelegate: AnyObject {
-    func didReceiveMainBalancePortfolioData(balance: String)
-}
-
     class PortfolioViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
         
         static var cryptocurrencies: [Cryptocurrency] = []
@@ -471,23 +467,24 @@ protocol PortfolioViewControllerDataDelegate: AnyObject {
         
         @objc private func updateTheme() {
             let isDarkTheme = ThemeManager.isDarkTheme
-            let textColorDarkTheme = UIColor.white
-            let textColorLightTheme = UIColor.black
+            let textColor = isDarkTheme ? UIColor.white : UIColor.black
+            let backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
             let cellBackgroundColor = isDarkTheme ? UIColor.black : UIColor.white
 
             view.backgroundColor = isDarkTheme ? UIColor(named: "black") : UIColor(named: "white")
             headerView.backgroundColor = UIColor(named: "tabbar")
-            usdWalletLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-            addCurrencyLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-            totalBalanceLabel.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-
-            totalBalanceView.backgroundColor = isDarkTheme ? UIColor(named: "backDark") : UIColor(named: "backLight")
-            mainBalancePortfolio.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-            hourMainBalancePortfolioPercent.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-            dayMainBalancePortfolioPercent.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-            weekMainBalancePortfolioPercent.textColor = isDarkTheme ? textColorDarkTheme : textColorLightTheme
-            
-            staticTimeLabel.textColor = UIColor(named: "usd")
+            usdWalletLabel.textColor = textColor
+            addCurrencyLabel.textColor = textColor
+            view.backgroundColor = backgroundColor
+            headerView.backgroundColor = UIColor(named: "tabbar")
+            labelForInfoName.textColor = .white
+            totalBalanceView.backgroundColor = backgroundColor
+            totalBalanceLabel.textColor = textColor
+            mainBalancePortfolio.textColor = textColor
+            hourMainBalancePortfolioPercent.textColor = textColor
+            dayMainBalancePortfolioPercent.textColor = textColor
+            weekMainBalancePortfolioPercent.textColor = textColor
+            staticTimeLabel.textColor = textColor
             cryptoTableView.backgroundColor = isDarkTheme ? UIColor.black : UIColor.white
             cryptoTableView.reloadData()
         }
