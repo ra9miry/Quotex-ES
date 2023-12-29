@@ -226,12 +226,9 @@ class QuizViewController: UIViewController {
             return
         }
         let tabBarViewController = StartScreenViewController()
-        if let window = UIApplication.shared.windows.first {
-            window.rootViewController = tabBarViewController
-            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
-        }
+        tabBarViewController.navigationItem.hidesBackButton = true
+        self.navigationController?.pushViewController(tabBarViewController, animated: true)
     }
-
 
     private func hideAllElementsExceptContinueButton() {
         questionNumberLabel.isHidden = true

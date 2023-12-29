@@ -108,9 +108,8 @@ class StartScreenViewController: UIViewController {
 
     @objc private func continueButtonTapped() {
         let tabBarViewController = TabBarViewController()
-        if let window = UIApplication.shared.windows.first {
-            window.rootViewController = tabBarViewController
-            UIView.transition(with: window, duration: 0.3, options: .transitionCrossDissolve, animations: nil, completion: nil)
-        }
+        tabBarViewController.navigationItem.hidesBackButton = true
+        self.navigationController?.pushViewController(tabBarViewController, animated: true)
+        UserDefaults.standard.set(true, forKey: "hasLaunchedBefore")
     }
 }
